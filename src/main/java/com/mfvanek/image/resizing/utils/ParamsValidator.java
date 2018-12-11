@@ -1,6 +1,7 @@
 package com.mfvanek.image.resizing.utils;
 
 import com.mfvanek.image.resizing.ResizeParams;
+import com.mfvanek.image.resizing.enums.ResizeType;
 
 public class ParamsValidator {
 
@@ -11,6 +12,7 @@ public class ParamsValidator {
     private String pathToFile;
     private int width;
     private int height;
+    private ResizeType algorithm = ResizeType.RAW;
 
     private ParamsValidator(String[] args) {
         this.args = args;
@@ -23,6 +25,11 @@ public class ParamsValidator {
 
     public ParamsValidator useDefault() {
         this.canUseDefault = true;
+        return this;
+    }
+
+    public ParamsValidator withAlgorithm(ResizeType algorithm) {
+        this.algorithm = algorithm;
         return this;
     }
 
@@ -49,7 +56,7 @@ public class ParamsValidator {
             }
         }
 
-        return new ResizeParams(pathToFile, width, height);
+        return new ResizeParams(pathToFile, width, height, algorithm);
     }
 
     private void validatePath() {

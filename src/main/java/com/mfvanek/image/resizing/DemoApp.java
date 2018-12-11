@@ -12,6 +12,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * TODO Consider to use any third party library https://www.baeldung.com/java-images
@@ -19,14 +21,14 @@ import java.net.URI;
 public class DemoApp {
 
     private static final Logger logger = LoggerFactory.getLogger(DemoApp.class);
-
-    private static final ResizeType algorithm = ResizeType.RAW;
+    private static Path tmpDir;
 
     public static void main(String[] args) {
         System.out.println("Hi there! This is demo application for image resizing");
 
         try {
-            final ResizeParams resizeParams = ParamsValidator.getInstance(args).useDefault().validate();
+            tmpDir = Files.createTempDirectory("resized_images_");
+            final ResizeParams resizeParams = ParamsValidator.getInstance(args).useDefault().withAlgorithm(ResizeType.KEEP_ASPECT_RATIO).validate();
 
             // TODO not working!
             // URI netUri = new URI("https://en.wikipedia.org/wiki/File:Java_programming_language_logo.svg");
@@ -51,12 +53,14 @@ public class DemoApp {
 
             if (img != null) {
                 try {
-                    final ImageResizer imageResizer = ResizersFactory.create(algorithm);
+                    final ImageResizer imageResizer = ResizersFactory.create(resizeParams.getAlgorithm());
                     BufferedImage outputImage = imageResizer.resize(img, resizeParams.getWidth(), resizeParams.getHeight());
 
                     // TODO save file in the same file-type as a source image
-                    File outputfile = new File("saved.png");
-                    ImageIO.write(outputImage, "png", outputfile);
+                    final URI outputUri = tmpDir.resolve("resized_file.png").toUri();
+                    File outputFile = new File(outputUri);
+                    ImageIO.write(outputImage, "png", outputFile);
+                    System.out.println("Resized " + outputUri);
                 } catch (IOException e) {
                     logger.error(e.getMessage(), e);
                 }
