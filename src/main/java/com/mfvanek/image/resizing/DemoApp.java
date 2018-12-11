@@ -10,8 +10,8 @@ import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -30,9 +30,8 @@ public class DemoApp {
             tmpDir = Files.createTempDirectory("resized_images_");
             final ResizeParams resizeParams = ParamsValidator.getInstance(args).useDefault().withAlgorithm(ResizeType.KEEP_ASPECT_RATIO).validate();
 
-            // TODO not working!
-            // URI netUri = new URI("https://en.wikipedia.org/wiki/File:Java_programming_language_logo.svg");
-            // processURI(netUri, resizeParams);
+            URI netUri = new URI("https://pp.userapi.com/c850132/v850132760/891c6/pI8_VnB8fKw.jpg");
+            processURI(netUri, resizeParams);
 
             URI localUri = new URI(resizeParams.getPathToFile());
             processURI(localUri, resizeParams);
@@ -44,26 +43,17 @@ public class DemoApp {
 
     private static void processURI(final URI uri, final ResizeParams resizeParams) {
         try {
-            BufferedImage img = null;
-            try {
-                img = ImageIO.read(new File(uri));
-            } catch (IOException e) {
-                logger.error(e.getMessage(), e);
-            }
+            BufferedImage img = resizeParams.isUrl() ? ImageIO.read(new URL(resizeParams.getPathToFile())) : ImageIO.read(new File(uri));
 
             if (img != null) {
-                try {
-                    final ImageResizer imageResizer = ResizersFactory.create(resizeParams.getAlgorithm());
-                    BufferedImage outputImage = imageResizer.resize(img, resizeParams.getWidth(), resizeParams.getHeight());
+                final ImageResizer imageResizer = ResizersFactory.create(resizeParams.getAlgorithm());
+                BufferedImage outputImage = imageResizer.resize(img, resizeParams.getWidth(), resizeParams.getHeight());
 
-                    // TODO save file in the same file-type as a source image
-                    final URI outputUri = tmpDir.resolve("resized_file.png").toUri();
-                    File outputFile = new File(outputUri);
-                    ImageIO.write(outputImage, "png", outputFile);
-                    System.out.println("Resized " + outputUri);
-                } catch (IOException e) {
-                    logger.error(e.getMessage(), e);
-                }
+                // TODO save file in the same file-type as a source image
+                final URI outputUri = tmpDir.resolve("resized_file.png").toUri();
+                File outputFile = new File(outputUri);
+                ImageIO.write(outputImage, "png", outputFile);
+                System.out.println("Resized " + outputUri);
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

@@ -13,6 +13,7 @@ public class ParamsValidator {
     private int width;
     private int height;
     private ResizeType algorithm = ResizeType.RAW;
+    private boolean isUrl = false;
 
     private ParamsValidator(String[] args) {
         this.args = args;
@@ -56,7 +57,7 @@ public class ParamsValidator {
             }
         }
 
-        return new ResizeParams(pathToFile, width, height, algorithm);
+        return new ResizeParams(pathToFile, width, height, algorithm, isUrl);
     }
 
     private void validatePath() {
@@ -66,6 +67,11 @@ public class ParamsValidator {
 
         if (!(pathToFile.startsWith("file") || pathToFile.startsWith("http"))) {
             throw new IllegalArgumentException("Path to image should starts with 'file' or 'http'");
+        }
+
+        // TODO figure out more elegant way
+        if (pathToFile.startsWith("http")) {
+            isUrl = true;
         }
     }
 
