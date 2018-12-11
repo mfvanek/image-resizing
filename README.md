@@ -4,7 +4,7 @@ Java image resizing console app
 Написать консольное приложение на Java, которое принимает на вход три параметра:
 - URL изображения (формата http://host/path или file:/path)
 - width
-- heights
+- height
 
 Результатом выполнения должно быть:
 - черно белое изображение (grayscale)
