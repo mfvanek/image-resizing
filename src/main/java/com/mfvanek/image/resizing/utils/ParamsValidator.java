@@ -1,6 +1,6 @@
 package com.mfvanek.image.resizing.utils;
 
-import com.mfvanek.image.resizing.ResizeParams;
+import com.mfvanek.image.resizing.pojos.ResizeParams;
 import com.mfvanek.image.resizing.enums.ResizeType;
 
 public class ParamsValidator {
@@ -9,11 +9,10 @@ public class ParamsValidator {
 
     private final String[] args;
     private boolean canUseDefault;
-    private String pathToFile;
+    private String pathToFile = "file:///C:/src/image-resizing/src/main/resources/java-logo.jpeg"; // default value TODO relative path
     private int width;
     private int height;
     private ResizeType algorithm = ResizeType.RAW;
-    private boolean isUrl = false;
 
     private ParamsValidator(String[] args) {
         this.args = args;
@@ -34,6 +33,11 @@ public class ParamsValidator {
         return this;
     }
 
+    public ParamsValidator withPath(String pathToFile) {
+        this.pathToFile = pathToFile;
+        return this;
+    }
+
     public ResizeParams validate() {
         if (args == null) {
             throw new IllegalArgumentException("Parameter 'args' cannot be null");
@@ -48,7 +52,6 @@ public class ParamsValidator {
             validateHeight();
         } else {
             if (args.length == 0 && this.canUseDefault) {
-                pathToFile = "file:///C:/src/image-resizing/src/main/resources/java-logo.jpeg"; // default value TODO relative path
                 width = 200;
                 height = 100;
             } else {
@@ -57,7 +60,7 @@ public class ParamsValidator {
             }
         }
 
-        return new ResizeParams(pathToFile, width, height, algorithm, isUrl);
+        return new ResizeParams(pathToFile, width, height, algorithm);
     }
 
     private void validatePath() {
@@ -67,11 +70,6 @@ public class ParamsValidator {
 
         if (!(pathToFile.startsWith("file") || pathToFile.startsWith("http"))) {
             throw new IllegalArgumentException("Path to image should starts with 'file' or 'http'");
-        }
-
-        // TODO figure out more elegant way
-        if (pathToFile.startsWith("http")) {
-            isUrl = true;
         }
     }
 
