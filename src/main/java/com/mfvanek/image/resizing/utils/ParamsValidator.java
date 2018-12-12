@@ -1,22 +1,42 @@
 package com.mfvanek.image.resizing.utils;
 
-import com.mfvanek.image.resizing.pojos.ResizeParams;
 import com.mfvanek.image.resizing.enums.ResizeType;
+import com.mfvanek.image.resizing.pojos.ResizeParams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.URISyntaxException;
+import java.net.URL;
 
 public class ParamsValidator {
+
+    private static final Logger logger = LoggerFactory.getLogger(ParamsValidator.class);
 
     private static final int EXPECTED_COUNT = 3;
 
     private final String[] args;
     private boolean canUseDefault;
-    private String pathToFile = "file:///C:/src/image-resizing/src/main/resources/java-logo.jpeg"; // default value TODO relative path
-    private int width;
-    private int height;
+    private String pathToFile;
+    private int width = 200;
+    private int height = 100;
     private ResizeType algorithm = ResizeType.RAW;
 
     private ParamsValidator(String[] args) {
         this.args = args;
         this.canUseDefault = false;
+
+        // TODO to static member
+        try {
+            final URL defaultURL = getClass().getClassLoader().getResource("java-logo.jpeg");
+            if (defaultURL != null) {
+                logger.debug("Default image URL = {}", defaultURL);
+                this.pathToFile = defaultURL.toURI().toString();
+            } else {
+                logger.error("Default image is not found!");
+            }
+        } catch (URISyntaxException e) {
+            logger.error(e.getLocalizedMessage(), e);
+        }
     }
 
     public static ParamsValidator getInstance(String[] args) {
@@ -45,43 +65,15 @@ public class ParamsValidator {
 
         if (args.length == EXPECTED_COUNT) {
             pathToFile = args[0];
-            validatePath();
             width = Integer.parseInt(args[1], 10);
-            validateWidth();
             height = Integer.parseInt(args[2], 10);
-            validateHeight();
         } else {
-            if (args.length == 0 && this.canUseDefault) {
-                width = 200;
-                height = 100;
-            } else {
+            if (!(args.length == 0 && this.canUseDefault)) {
                 final String error = String.format("Invalid number of arguments; should be %d arguments: path-to-image, width and height", EXPECTED_COUNT);
                 throw new IllegalArgumentException(error);
             }
         }
 
         return new ResizeParams(pathToFile, width, height, algorithm);
-    }
-
-    private void validatePath() {
-        if (pathToFile.length() == 0) {
-            throw new IllegalArgumentException("Path to image cannot be empty");
-        }
-
-        if (!(pathToFile.startsWith("file") || pathToFile.startsWith("http"))) {
-            throw new IllegalArgumentException("Path to image should starts with 'file' or 'http'");
-        }
-    }
-
-    private void validateWidth() {
-        if (width < 1) {
-            throw new IllegalArgumentException("Width should be positive");
-        }
-    }
-
-    private void validateHeight() {
-        if (height < 1) {
-            throw new IllegalArgumentException("Height should be positive");
-        }
     }
 }
