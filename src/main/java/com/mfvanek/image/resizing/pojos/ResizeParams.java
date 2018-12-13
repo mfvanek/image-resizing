@@ -28,6 +28,7 @@ public class ResizeParams {
     }
 
     private final String pathToFile;
+    private final String pathToFileLowercased;
     private final int width;
     private final int height;
     private final ResizeType algorithm;
@@ -39,17 +40,26 @@ public class ResizeParams {
         validateHeight(height);
 
         this.pathToFile = pathToFile;
+        this.pathToFileLowercased = pathToFile.toLowerCase();
         this.width = width;
         this.height = height;
         this.algorithm = algorithm;
     }
 
+    public static ResizeParams newWithRaw(String pathToFile, int width, int height) {
+        return new ResizeParams(pathToFile, width, height, ResizeType.RAW);
+    }
+
+    public static ResizeParams newWithDefaultDimension(String pathToFile) {
+        return newWithRaw(pathToFile, 500, 500);
+    }
+
     public boolean isSimilarToURL() {
-        return pathToFile.toLowerCase().startsWith("http");
+        return pathToFileLowercased.startsWith("http");
     }
 
     public String getExtension() {
-        return FilenameUtils.getExtension(pathToFile);
+        return FilenameUtils.getExtension(pathToFileLowercased);
     }
 
     public URI toURI() throws URISyntaxException {

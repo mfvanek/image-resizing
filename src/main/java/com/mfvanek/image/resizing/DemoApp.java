@@ -18,6 +18,10 @@ import java.nio.file.Path;
 
 /**
  * TODO Consider to use any third party library https://www.baeldung.com/java-images
+ *
+ * For instance:
+ * file:/C:/src/image-resizing/target/classes/java-logo.jpeg
+ * file:///C:/Users/IVAN~1.VAK/AppData/Local/Temp/resized_images_7304718956539175727/resized_java-logo.jpeg
  */
 class DemoApp {
 
