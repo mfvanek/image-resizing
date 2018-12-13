@@ -5,9 +5,12 @@
 
 package com.mfvanek.image.resizing.interfaces;
 
+
+import com.mfvanek.image.resizing.pojos.Dimension;
+
 import java.awt.image.BufferedImage;
 
 public interface ImageResizer {
 
-    BufferedImage resize(BufferedImage inputImage, int newWidth, int newHeight);
+    BufferedImage resize(BufferedImage inputImage, Dimension newDimension);
 }

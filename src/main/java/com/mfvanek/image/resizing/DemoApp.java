@@ -6,6 +6,7 @@
 package com.mfvanek.image.resizing;
 
 import com.mfvanek.image.resizing.enums.ResizeType;
+import com.mfvanek.image.resizing.interfaces.GraphicsProvider;
 import com.mfvanek.image.resizing.interfaces.ImageResizer;
 import com.mfvanek.image.resizing.pojos.ResizeParams;
 import com.mfvanek.image.resizing.resizers.ResizersFactory;
@@ -37,28 +38,32 @@ class DemoApp {
         System.out.println("Hi there! This is demo application for image resizing");
 
         try {
+            final GraphicsProvider graphicsProvider = ResizersFactory.newGraphicsProvider();
+            System.out.println("Supported formats: " + String.join(", ", graphicsProvider.getSupportedFormats()));
+
             tmpDir = Files.createTempDirectory("resized_images_");
             ResizeParams resizeParams = ParamsValidator.getInstance(args).
                     useDefaultIfNeed().
                     withAlgorithm(ResizeType.KEEP_ASPECT_RATIO).
                     withPath("https://static.ngs.ru/news/99/preview/e88eba0dbd5cd0e30ee349a3a3c54dbd07d2b28f_712.jpg").
                     validate();
-            process(resizeParams);
+            process(graphicsProvider, resizeParams);
 
-            resizeParams = ParamsValidator.getInstance(args).useDefaultIfNeed().withAlgorithm(ResizeType.KEEP_ASPECT_RATIO).validate();
-            process(resizeParams);
+            resizeParams = ParamsValidator.getInstance(args).useDefaultIfNeed().withAlgorithm(ResizeType.RAW).validate();
+            process(graphicsProvider, resizeParams);
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            logger.error(e.getLocalizedMessage(), e);
         }
     }
 
-    private static void process(final ResizeParams resizeParams) {
+    private static void process(final GraphicsProvider graphicsProvider, final ResizeParams resizeParams) {
         try {
-            if (resizeParams.isFormatNotSupported()) {
+            if (graphicsProvider.isFormatNotSupported(resizeParams.getExtension())) {
                 System.out.println(String.format("File format '%s' is not supported", resizeParams.getExtension()));
                 return;
             }
 
+            // TODO extract to separate class
             BufferedImage img;
             if (resizeParams.isSimilarToURL()) {
                 img = ImageIO.read(resizeParams.toURI().toURL());
@@ -68,13 +73,16 @@ class DemoApp {
             }
 
             if (img != null) {
-                final ImageResizer imageResizer = ResizersFactory.create(resizeParams.getAlgorithm());
-                final BufferedImage outputImage = imageResizer.resize(img, resizeParams.getWidth(), resizeParams.getHeight());
+                final ImageResizer imageResizer = ResizersFactory.newImageResizer(resizeParams.getAlgorithm());
+                final long startTime = System.currentTimeMillis();
+                final BufferedImage outputImage = imageResizer.resize(img, resizeParams.getDimension());
+                final long endTime = System.currentTimeMillis();
+                logger.debug(String.format("Resize is completed. Elapsed time %d ms", endTime - startTime));
 
                 saveToFile(resizeParams, outputImage);
             }
         } catch (Exception e) {
-            logger.error(e.getMessage(), e);
+            logger.error(e.getLocalizedMessage(), e);
         }
     }
 

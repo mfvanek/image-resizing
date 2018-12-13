@@ -5,7 +5,7 @@
 
 package com.mfvanek.image.resizing.resizers;
 
-import java.awt.*;
+import java.awt.Image;
 
 class RawImageResizer extends AbstractImageResizer {
 

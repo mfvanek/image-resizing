@@ -11,7 +11,10 @@ import org.junit.jupiter.api.Test;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ResizeParamsTest {
 
@@ -40,13 +43,9 @@ class ResizeParamsTest {
     void getExtension() {
         ResizeParams resizeParams = ResizeParams.newWithDefaultDimension("https://any-web-site/any-catalog/anyfile.png");
         assertEquals("png", resizeParams.getExtension());
-        assertTrue(resizeParams.isFormatSupported());
-        assertFalse(resizeParams.isFormatNotSupported());
 
         resizeParams = ResizeParams.newWithDefaultDimension("file:///C:/Users/IVAN~1.VAK/AppData/Local/Temp/resized_images_7304718956539175727/resized_java-logo.JPEG");
         assertEquals("jpeg", resizeParams.getExtension());
-        assertTrue(resizeParams.isFormatSupported());
-        assertFalse(resizeParams.isFormatNotSupported());
     }
 
     @Test
@@ -67,19 +66,6 @@ class ResizeParamsTest {
     }
 
     @Test
-    void isFormatSupported_NotSupported() {
-        ResizeParams resizeParams = ResizeParams.newWithDefaultDimension("https://any-web-site/any-catalog/anyfile.PnG");
-        assertEquals("png", resizeParams.getExtension());
-        assertTrue(resizeParams.isFormatSupported());
-        assertFalse(resizeParams.isFormatNotSupported());
-
-        resizeParams = ResizeParams.newWithDefaultDimension("https://any-web-site/any-catalog/anyfile.exTensIoN");
-        assertEquals("extension", resizeParams.getExtension());
-        assertFalse(resizeParams.isFormatSupported());
-        assertTrue(resizeParams.isFormatNotSupported());
-    }
-
-    @Test
     void getPathToFile() {
         ResizeParams resizeParams = ResizeParams.newWithDefaultDimension("https://any-web-site/any-catalog/anyfile.PnG");
         assertEquals("https://any-web-site/any-catalog/anyfile.PnG", resizeParams.getPathToFile());
@@ -92,7 +78,7 @@ class ResizeParamsTest {
         assertEquals(500, resizeParams.getHeight());
         assertEquals(ResizeType.RAW, resizeParams.getAlgorithm());
 
-        resizeParams = new ResizeParams("https://anyfile.PnG", 100, 200, ResizeType.KEEP_ASPECT_RATIO);
+        resizeParams = ResizeParams.newWithAlgorithm("https://anyfile.PnG", 100, 200, ResizeType.KEEP_ASPECT_RATIO);
         assertEquals(100, resizeParams.getWidth());
         assertEquals(200, resizeParams.getHeight());
         assertEquals(ResizeType.KEEP_ASPECT_RATIO, resizeParams.getAlgorithm());

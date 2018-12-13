@@ -84,7 +84,7 @@ public class ParamsValidator {
             }
         }
 
-        return new ResizeParams(pathToFile, width, height, algorithm);
+        return ResizeParams.newWithAlgorithm(pathToFile, width, height, algorithm);
     }
 
     private static int toDimensionValue(String value, String paramName) {

@@ -5,7 +5,9 @@
 
 package com.mfvanek.image.resizing.resizers;
 
-import java.awt.*;
+import com.mfvanek.image.resizing.pojos.Dimension;
+
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 class KeepingAspectRatioResizer extends AbstractImageResizer {
@@ -15,9 +17,11 @@ class KeepingAspectRatioResizer extends AbstractImageResizer {
     }
 
     @Override
-    public BufferedImage resize(BufferedImage inputImage, int newWidth, int newHeight) {
-        double aspectRatio = inputImage.getWidth() / (double) inputImage.getHeight();
-        int scaledHeight = (int) (newWidth / aspectRatio);
-        return super.resize(inputImage, newWidth, scaledHeight);
+    public BufferedImage resize(BufferedImage inputImage, Dimension newDimension) {
+        // TODO More smart algorithm is needed for scaling
+        final int newWidth = newDimension.getWidth();
+        final double aspectRatio = inputImage.getWidth() / (double) inputImage.getHeight();
+        final int scaledHeight = (int) (newWidth / aspectRatio);
+        return super.resize(inputImage, newDimension);
     }
 }

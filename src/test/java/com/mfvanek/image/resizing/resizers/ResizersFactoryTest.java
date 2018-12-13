@@ -15,10 +15,10 @@ class ResizersFactoryTest {
 
     @Test
     void create() {
-        final ImageResizer imageResizerRaw = ResizersFactory.create(ResizeType.RAW);
+        final ImageResizer imageResizerRaw = ResizersFactory.newImageResizer(ResizeType.RAW);
         assertNotNull(imageResizerRaw);
 
-        final ImageResizer imageResizerAspectRatio = ResizersFactory.create(ResizeType.KEEP_ASPECT_RATIO);
+        final ImageResizer imageResizerAspectRatio = ResizersFactory.newImageResizer(ResizeType.KEEP_ASPECT_RATIO);
         assertNotNull(imageResizerAspectRatio);
 
         assertNotEquals(imageResizerRaw.getClass(), imageResizerAspectRatio.getClass());
