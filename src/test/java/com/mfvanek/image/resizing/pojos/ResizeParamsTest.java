@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2018. Ivan Vakhrushev. All rights reserved.
+ * https://github.com/mfvanek
+ */
+
 package com.mfvanek.image.resizing.pojos;
 
 import com.mfvanek.image.resizing.enums.ResizeType;

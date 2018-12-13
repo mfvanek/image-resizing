@@ -13,6 +13,12 @@
       <module name="image.resizing" target="1.8" />
     </bytecodeTargetLevel>
   </component>
+  <component name="CopyrightManager" default="mfvanek">
+    <copyright>
+      <option name="notice" value="Copyright (c) 2018. Ivan Vakhrushev. All rights reserved.&#10;https://github.com/mfvanek" />
+      <option name="myName" value="mfvanek" />
+    </copyright>
+  </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="InspectionProjectProfileManager">
     <profile version="1.0">
