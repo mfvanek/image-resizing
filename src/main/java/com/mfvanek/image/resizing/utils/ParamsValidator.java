@@ -18,6 +18,7 @@ public class ParamsValidator {
     private static final Logger logger = LoggerFactory.getLogger(ParamsValidator.class);
 
     private static final int EXPECTED_COUNT = 3;
+    private static final URL DEFAULT_URL = getDefaultImage();
 
     private final String[] args;
     private boolean canUseDefault;
@@ -29,26 +30,30 @@ public class ParamsValidator {
     private ParamsValidator(String[] args) {
         this.args = args;
         this.canUseDefault = false;
-
-        // TODO to static member
         try {
-            final URL defaultURL = getClass().getClassLoader().getResource("java-logo.jpeg");
-            if (defaultURL != null) {
-                logger.debug("Default image URL = {}", defaultURL);
-                this.pathToFile = defaultURL.toURI().toString();
-            } else {
-                logger.error("Default image is not found!");
+            if (DEFAULT_URL != null) {
+                this.pathToFile = DEFAULT_URL.toURI().toString();
             }
         } catch (URISyntaxException e) {
-            logger.error(e.getLocalizedMessage(), e);
+            throw new IllegalArgumentException(e);
         }
+    }
+
+    private static URL getDefaultImage() {
+        final URL defaultURL = ParamsValidator.class.getClassLoader().getResource("java-logo.jpeg");
+        if (defaultURL != null) {
+            logger.debug("Default image URL = {}", defaultURL);
+        } else {
+            logger.error("Default image is not found!");
+        }
+        return defaultURL;
     }
 
     public static ParamsValidator getInstance(String[] args) {
         return new ParamsValidator(args);
     }
 
-    public ParamsValidator useDefault() {
+    public ParamsValidator useDefaultIfNeed() {
         this.canUseDefault = true;
         return this;
     }
@@ -70,8 +75,8 @@ public class ParamsValidator {
 
         if (args.length == EXPECTED_COUNT) {
             pathToFile = args[0];
-            width = Integer.parseInt(args[1], 10);
-            height = Integer.parseInt(args[2], 10);
+            width = toDimensionValue(args[1], "width");
+            height = toDimensionValue(args[2], "height");
         } else {
             if (!(args.length == 0 && this.canUseDefault)) {
                 final String error = String.format("Invalid number of arguments; should be %d arguments: path-to-image, width and height", EXPECTED_COUNT);
@@ -80,5 +85,14 @@ public class ParamsValidator {
         }
 
         return new ResizeParams(pathToFile, width, height, algorithm);
+    }
+
+    private static int toDimensionValue(String value, String paramName) {
+        try {
+            return Integer.parseInt(value, 10);
+        } catch (NumberFormatException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            throw new IllegalArgumentException(String.format("The %s has an invalid format or value", paramName), e);
+        }
     }
 }

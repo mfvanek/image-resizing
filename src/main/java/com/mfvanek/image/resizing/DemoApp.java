@@ -39,13 +39,13 @@ class DemoApp {
         try {
             tmpDir = Files.createTempDirectory("resized_images_");
             ResizeParams resizeParams = ParamsValidator.getInstance(args).
-                    useDefault().
+                    useDefaultIfNeed().
                     withAlgorithm(ResizeType.KEEP_ASPECT_RATIO).
                     withPath("https://static.ngs.ru/news/99/preview/e88eba0dbd5cd0e30ee349a3a3c54dbd07d2b28f_712.jpg").
                     validate();
             process(resizeParams);
 
-            resizeParams = ParamsValidator.getInstance(args).useDefault().withAlgorithm(ResizeType.KEEP_ASPECT_RATIO).validate();
+            resizeParams = ParamsValidator.getInstance(args).useDefaultIfNeed().withAlgorithm(ResizeType.KEEP_ASPECT_RATIO).validate();
             process(resizeParams);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
