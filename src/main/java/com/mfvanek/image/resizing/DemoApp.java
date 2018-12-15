@@ -46,14 +46,18 @@ public class DemoApp {
             System.out.println("Supported formats: " + String.join(", ", graphicsProvider.getSupportedFormats()));
 
             tmpDir = Files.createTempDirectory("resized_images_");
-            ResizeParams resizeParams = ParamsValidator.getInstance(args).
-                    useDefaultIfNeed().
-                    withAlgorithm(ResizeType.KEEP_ASPECT_RATIO).
-                    withPath("https://static.ngs.ru/news/99/preview/e88eba0dbd5cd0e30ee349a3a3c54dbd07d2b28f_712.jpg").
-                    validate();
-            process(graphicsProvider, resizeParams);
+            System.out.println("Output directory = " + tmpDir);
 
-            resizeParams = ParamsValidator.getInstance(args).useDefaultIfNeed().withAlgorithm(ResizeType.RAW).validate();
+            if (args.length == 0) { // when running from IDE
+                ResizeParams resizeParams = ParamsValidator.getInstance(args).
+                        useDefaultIfNeed().
+                        withAlgorithm(ResizeType.KEEP_ASPECT_RATIO).
+                        withPath("https://static.ngs.ru/news/99/preview/e88eba0dbd5cd0e30ee349a3a3c54dbd07d2b28f_712.jpg").
+                        validate();
+                process(graphicsProvider, resizeParams);
+            }
+
+            ResizeParams resizeParams = ParamsValidator.getInstance(args).useDefaultIfNeed().withAlgorithm(ResizeType.RAW).validate();
             process(graphicsProvider, resizeParams);
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
@@ -74,8 +78,9 @@ public class DemoApp {
                 final BufferedImage outputImage = imageResizer.resize(img, resizeParams);
                 final long endTime = System.currentTimeMillis();
                 logger.debug(String.format("Resize is completed. Elapsed time %d ms", endTime - startTime));
-
                 saveToFile(resizeParams, outputImage);
+            } else {
+                logger.error("Unable to load given image");
             }
         } catch (Exception e) {
             logger.error(e.getLocalizedMessage(), e);
