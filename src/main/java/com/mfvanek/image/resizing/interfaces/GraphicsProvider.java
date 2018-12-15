@@ -5,6 +5,11 @@
 
 package com.mfvanek.image.resizing.interfaces;
 
+import java.awt.image.BufferedImage;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Set;
 
 public interface GraphicsProvider {
@@ -15,5 +20,23 @@ public interface GraphicsProvider {
 
     default boolean isFormatNotSupported(String imageFormat) {
         return !isFormatSupported(imageFormat);
+    }
+
+    BufferedImage loadImage(URI uri);
+
+    BufferedImage loadImage(URL url);
+
+    default BufferedImage loadImage(ImageParams params) {
+        BufferedImage img;
+        try {
+            if (params.isSimilarToURL()) {
+                img = loadImage(params.toURI().toURL());
+            } else {
+                img = loadImage(params.toURI());
+            }
+        } catch (URISyntaxException | MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+        return img;
     }
 }

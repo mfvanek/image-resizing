@@ -6,6 +6,7 @@
 package com.mfvanek.image.resizing.resizers;
 
 import com.mfvanek.image.resizing.enums.ResizeType;
+import com.mfvanek.image.resizing.interfaces.GraphicsProvider;
 import com.mfvanek.image.resizing.interfaces.ImageResizer;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ResizersFactoryTest {
 
     @Test
-    void create() {
+    void createImageResizer() {
         final ImageResizer imageResizerRaw = ResizersFactory.newImageResizer(ResizeType.RAW);
         assertNotNull(imageResizerRaw);
 
@@ -22,5 +23,11 @@ class ResizersFactoryTest {
         assertNotNull(imageResizerAspectRatio);
 
         assertNotEquals(imageResizerRaw.getClass(), imageResizerAspectRatio.getClass());
+    }
+
+    @Test
+    void createGraphicsProvider() {
+        final GraphicsProvider graphicsProvider = ResizersFactory.newGraphicsProvider();
+        assertNotNull(graphicsProvider);
     }
 }

@@ -29,7 +29,7 @@ import java.nio.file.Path;
  * file:/C:/src/image-resizing/target/classes/java-logo.jpeg
  * file:///C:/Users/IVAN~1.VAK/AppData/Local/Temp/resized_images_7304718956539175727/resized_java-logo.jpeg
  */
-class DemoApp {
+public class DemoApp {
 
     private static final Logger logger = LoggerFactory.getLogger(DemoApp.class);
     private static Path tmpDir;
@@ -63,19 +63,11 @@ class DemoApp {
                 return;
             }
 
-            // TODO extract to separate class
-            BufferedImage img;
-            if (resizeParams.isSimilarToURL()) {
-                img = ImageIO.read(resizeParams.toURI().toURL());
-            } else {
-                File file = new File(resizeParams.toURI());
-                img = ImageIO.read(file);
-            }
-
+            BufferedImage img = graphicsProvider.loadImage(resizeParams);
             if (img != null) {
                 final ImageResizer imageResizer = ResizersFactory.newImageResizer(resizeParams.getAlgorithm());
                 final long startTime = System.currentTimeMillis();
-                final BufferedImage outputImage = imageResizer.resize(img, resizeParams.getDimension());
+                final BufferedImage outputImage = imageResizer.resize(img, resizeParams);
                 final long endTime = System.currentTimeMillis();
                 logger.debug(String.format("Resize is completed. Elapsed time %d ms", endTime - startTime));
 

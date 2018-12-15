@@ -18,11 +18,11 @@ class ParamsValidatorTest {
 
     @Test
     void withoutArgs() {
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> ParamsValidator.getInstance(null).validate());
-        assertEquals("Parameter 'args' cannot be null", e.getMessage());
+        NullPointerException e1 = assertThrows(NullPointerException.class, () -> ParamsValidator.getInstance(null).validate());
+        assertEquals("Parameter 'args' cannot be null", e1.getMessage());
 
-        e = assertThrows(IllegalArgumentException.class, () -> ParamsValidator.getInstance(new String[0]).validate());
-        assertEquals("Invalid number of arguments; should be 3 arguments: path-to-image, width and height", e.getMessage());
+        IllegalArgumentException e2 = assertThrows(IllegalArgumentException.class, () -> ParamsValidator.getInstance(new String[0]).validate());
+        assertEquals("Invalid number of arguments; should be 3 arguments: path-to-image, width and height", e2.getMessage());
     }
 
     @Test

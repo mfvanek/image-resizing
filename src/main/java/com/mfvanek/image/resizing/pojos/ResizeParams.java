@@ -6,7 +6,7 @@
 package com.mfvanek.image.resizing.pojos;
 
 import com.mfvanek.image.resizing.enums.ResizeType;
-import com.mfvanek.image.resizing.interfaces.Dimensional;
+import com.mfvanek.image.resizing.interfaces.ImageParams;
 import lombok.Getter;
 import lombok.ToString;
 import org.apache.commons.io.FilenameUtils;
@@ -15,10 +15,11 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Objects;
 
 @Getter
 @ToString
-public class ResizeParams implements Dimensional {
+public class ResizeParams implements ImageParams {
 
     private static final Logger logger = LoggerFactory.getLogger(ResizeParams.class);
 
@@ -26,19 +27,22 @@ public class ResizeParams implements Dimensional {
     private final String pathToFileLowercased;
     private final Dimension dimension;
     private final ResizeType algorithm;
+    private final boolean convertToGrayscale;
 
-    private ResizeParams(String pathToFile, Dimension dimension, ResizeType algorithm) {
-        logger.debug("Constructing ResizeParams with: pathToFile = {}, dimension = {}, algorithm = {}", pathToFile, dimension, algorithm);
+    private ResizeParams(String pathToFile, Dimension dimension, ResizeType algorithm, boolean convertToGrayscale) {
+        logger.debug("Constructing ResizeParams with: pathToFile = {}, dimension = {}, algorithm = {}, convertToGrayscale = {}",
+                pathToFile, dimension, algorithm, convertToGrayscale);
         validatePath(pathToFile);
 
         this.pathToFile = pathToFile;
         this.pathToFileLowercased = pathToFile.toLowerCase();
         this.dimension = dimension;
         this.algorithm = algorithm;
+        this.convertToGrayscale = convertToGrayscale;
     }
 
     public static ResizeParams newWithAlgorithm(String pathToFile, int width, int height, ResizeType algorithm) {
-        return new ResizeParams(pathToFile, new Dimension(width, height), algorithm);
+        return new ResizeParams(pathToFile, new Dimension(width, height), algorithm, true);
     }
 
     public static ResizeParams newWithRaw(String pathToFile, int width, int height) {
@@ -49,20 +53,29 @@ public class ResizeParams implements Dimensional {
         return newWithRaw(pathToFile, 500, 500);
     }
 
+    @Override
     public boolean isSimilarToURL() {
         return pathToFileLowercased.startsWith("http");
     }
 
+    @Override
     public String getExtension() {
         return FilenameUtils.getExtension(pathToFileLowercased);
     }
 
+    @Override
     public URI toURI() throws URISyntaxException {
         return new URI(pathToFile);
     }
 
+    @Override
     public String getOutputName() {
         return "resized_" + FilenameUtils.getName(pathToFile);
+    }
+
+    @Override
+    public boolean isConvertToGrayscale() {
+        return convertToGrayscale;
     }
 
     @Override
@@ -76,9 +89,7 @@ public class ResizeParams implements Dimensional {
     }
 
     private static void validatePath(String pathToFile) {
-        if (pathToFile == null) {
-            throw new IllegalArgumentException("Path to image cannot be null");
-        }
+        Objects.requireNonNull(pathToFile, "Path to image cannot be null");
 
         if (pathToFile.length() == 0) {
             throw new IllegalArgumentException("Path to image cannot be empty");

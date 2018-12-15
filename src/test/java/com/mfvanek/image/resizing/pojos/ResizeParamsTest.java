@@ -20,10 +20,10 @@ class ResizeParamsTest {
 
     @Test
     void withInvalidPath() {
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> ResizeParams.newWithDefaultDimension(null));
-        assertEquals("Path to image cannot be null", e.getMessage());
+        NullPointerException ex = assertThrows(NullPointerException.class, () -> ResizeParams.newWithDefaultDimension(null));
+        assertEquals("Path to image cannot be null", ex.getMessage());
 
-        e = assertThrows(IllegalArgumentException.class, () -> ResizeParams.newWithDefaultDimension(""));
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> ResizeParams.newWithDefaultDimension(""));
         assertEquals("Path to image cannot be empty", e.getMessage());
 
         e = assertThrows(IllegalArgumentException.class, () -> ResizeParams.newWithDefaultDimension("invalid path"));

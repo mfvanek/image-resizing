@@ -9,7 +9,6 @@ import com.mfvanek.image.resizing.interfaces.Dimensional;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-// TODO implement tests
 @ToString
 @EqualsAndHashCode
 public class Dimension implements Dimensional {

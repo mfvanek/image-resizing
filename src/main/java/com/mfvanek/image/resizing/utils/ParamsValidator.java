@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Objects;
 
 public class ParamsValidator {
 
@@ -69,9 +70,7 @@ public class ParamsValidator {
     }
 
     public ResizeParams validate() {
-        if (args == null) {
-            throw new IllegalArgumentException("Parameter 'args' cannot be null");
-        }
+        Objects.requireNonNull(args, "Parameter 'args' cannot be null");
 
         if (args.length == EXPECTED_COUNT) {
             pathToFile = args[0];

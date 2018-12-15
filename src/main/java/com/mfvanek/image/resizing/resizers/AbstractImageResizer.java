@@ -5,8 +5,8 @@
 
 package com.mfvanek.image.resizing.resizers;
 
+import com.mfvanek.image.resizing.interfaces.ImageParams;
 import com.mfvanek.image.resizing.interfaces.ImageResizer;
-import com.mfvanek.image.resizing.pojos.Dimension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,9 +25,10 @@ abstract class AbstractImageResizer implements ImageResizer {
     }
 
     @Override
-    public BufferedImage resize(BufferedImage inputImage, Dimension newDimension) {
-        final Image tmp = inputImage.getScaledInstance(newDimension.getWidth(), newDimension.getHeight(), hints);
-        final BufferedImage resized = new BufferedImage(newDimension.getWidth(), newDimension.getHeight(), inputImage.getType());
+    public BufferedImage resize(BufferedImage inputImage, ImageParams resizeParams) {
+        final Image tmp = inputImage.getScaledInstance(resizeParams.getWidth(), resizeParams.getHeight(), hints);
+        final BufferedImage resized = new BufferedImage(resizeParams.getWidth(), resizeParams.getHeight(),
+                resizeParams.isConvertToGrayscale() ? BufferedImage.TYPE_BYTE_GRAY : inputImage.getType());
         Graphics2D g2d = null;
         try {
             g2d = resized.createGraphics();
