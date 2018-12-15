@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 
 /**
  * TODO Consider to use any third party library https://www.baeldung.com/java-images
@@ -35,7 +36,10 @@ public class DemoApp {
     private static Path tmpDir;
 
     public static void main(String[] args) {
-        System.out.println("Hi there! This is demo application for image resizing");
+        System.out.println("Hi there!\nThis is demo application for image resizing");
+        System.out.print(String.format("Started with args[%d] = ", args.length));
+        Arrays.stream(args).forEach(a -> System.out.print(a + " "));
+        System.out.println();
 
         try {
             final GraphicsProvider graphicsProvider = ResizersFactory.newGraphicsProvider();
