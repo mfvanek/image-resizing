@@ -74,10 +74,10 @@ public class DemoApp {
             BufferedImage img = graphicsProvider.loadImage(resizeParams);
             if (img != null) {
                 final ImageResizer imageResizer = ResizersFactory.newImageResizer(resizeParams.getAlgorithm());
-                final long startTime = System.currentTimeMillis();
+                final long startTime = System.nanoTime();
                 final BufferedImage outputImage = imageResizer.resize(img, resizeParams);
-                final long endTime = System.currentTimeMillis();
-                logger.debug(String.format("Resize is completed. Elapsed time %d ms", endTime - startTime));
+                final long endTime = System.nanoTime();
+                logger.debug(String.format("Resize is completed. Elapsed time %d microseconds", (endTime - startTime) / 1_000_000));
                 saveToFile(resizeParams, outputImage);
             } else {
                 logger.error("Unable to load given image");
