@@ -16,11 +16,11 @@ import java.awt.image.BufferedImage;
 
 abstract class AbstractImageResizer implements ImageResizer {
 
-    protected static final Logger logger = LoggerFactory.getLogger(AbstractImageResizer.class);
+    private static final Logger logger = LoggerFactory.getLogger(AbstractImageResizer.class);
 
     private final int hints;
 
-    protected AbstractImageResizer(int hints) {
+    AbstractImageResizer(int hints) {
         this.hints = hints;
     }
 

@@ -8,6 +8,7 @@ package com.mfvanek.image.resizing.resizers;
 import com.mfvanek.image.resizing.interfaces.GraphicsProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -20,6 +21,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 // TODO tests
+@Component("graphicsProvider")
 class AwtGraphicsProvider implements GraphicsProvider {
 
     private static final Logger logger = LoggerFactory.getLogger(AwtGraphicsProvider.class);

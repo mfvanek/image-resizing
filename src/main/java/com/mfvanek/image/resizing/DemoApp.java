@@ -13,6 +13,8 @@ import com.mfvanek.image.resizing.resizers.ResizersFactory;
 import com.mfvanek.image.resizing.utils.ParamsValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -41,8 +43,10 @@ public class DemoApp {
         Arrays.stream(args).forEach(a -> System.out.print(a + " "));
         System.out.println();
 
+        final ApplicationContext ctx = new AnnotationConfigApplicationContext(ResizersConfig.class);
+
         try {
-            final GraphicsProvider graphicsProvider = ResizersFactory.newGraphicsProvider();
+            final GraphicsProvider graphicsProvider = ctx.getBean(GraphicsProvider.class);
             System.out.println("Supported formats: " + String.join(", ", graphicsProvider.getSupportedFormats()));
 
             tmpDir = Files.createTempDirectory("resized_images_");
@@ -73,7 +77,7 @@ public class DemoApp {
 
             BufferedImage img = graphicsProvider.loadImage(resizeParams);
             if (img != null) {
-                final ImageResizer imageResizer = ResizersFactory.newImageResizer(resizeParams.getAlgorithm());
+                final ImageResizer imageResizer = ResizersFactory.getByAlgorithm(resizeParams.getAlgorithm());
                 final long startTime = System.nanoTime();
                 final BufferedImage outputImage = imageResizer.resize(img, resizeParams);
                 final long endTime = System.nanoTime();

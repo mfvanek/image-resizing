@@ -6,9 +6,13 @@
 package com.mfvanek.image.resizing.interfaces;
 
 
+import com.mfvanek.image.resizing.enums.ResizeType;
+
 import java.awt.image.BufferedImage;
 
 public interface ImageResizer {
 
     BufferedImage resize(BufferedImage inputImage, ImageParams resizeParams);
+
+    ResizeType getAlgorithm();
 }

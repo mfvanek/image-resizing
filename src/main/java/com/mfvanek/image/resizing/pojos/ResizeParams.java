@@ -54,6 +54,11 @@ public class ResizeParams implements ImageParams {
     }
 
     @Override
+    public String getPathToFile() {
+        return pathToFile;
+    }
+
+    @Override
     public boolean isSimilarToURL() {
         return pathToFileLowercased.startsWith("http");
     }
@@ -88,6 +93,11 @@ public class ResizeParams implements ImageParams {
         return dimension.getHeight();
     }
 
+    @Override
+    public ResizeType getAlgorithm() {
+        return algorithm;
+    }
+
     private static void validatePath(String pathToFile) {
         Objects.requireNonNull(pathToFile, "Path to image cannot be null");
 
@@ -98,5 +108,9 @@ public class ResizeParams implements ImageParams {
         if (!(pathToFile.startsWith("file") || pathToFile.startsWith("http"))) {
             throw new IllegalArgumentException("Path to image should starts with 'file' or 'http'");
         }
+    }
+
+    public static ImageParams from(ImageParams oldParams, Dimension newDimension) {
+        return new ResizeParams(oldParams.getPathToFile(), newDimension, oldParams.getAlgorithm(), oldParams.isConvertToGrayscale());
     }
 }
