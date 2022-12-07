@@ -14,6 +14,7 @@ import org.apache.commons.io.FilenameUtils;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Locale;
 import java.util.Objects;
 
 @Slf4j
@@ -33,7 +34,7 @@ public class ResizeParams implements ImageParams {
         validatePath(pathToFile);
 
         this.pathToFile = pathToFile;
-        this.pathToFileLowercased = pathToFile.toLowerCase();
+        this.pathToFileLowercased = pathToFile.toLowerCase(Locale.ENGLISH);
         this.dimension = dimension;
         this.algorithm = algorithm;
         this.convertToGrayscale = convertToGrayscale;
