@@ -7,8 +7,10 @@ package com.mfvanek.image.resizing.pojos;
 
 import com.mfvanek.image.resizing.interfaces.Dimensional;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 
+@Getter
 @ToString
 @EqualsAndHashCode
 public class Dimension implements Dimensional {
@@ -26,16 +28,6 @@ public class Dimension implements Dimensional {
 
         this.width = width;
         this.height = height;
-    }
-
-    @Override
-    public int getWidth() {
-        return width;
-    }
-
-    @Override
-    public int getHeight() {
-        return height;
     }
 
     private static void validateWidth(int width) {

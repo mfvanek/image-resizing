@@ -7,16 +7,14 @@ package com.mfvanek.image.resizing.utils;
 
 import com.mfvanek.image.resizing.enums.ResizeType;
 import com.mfvanek.image.resizing.pojos.ResizeParams;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Objects;
 
+@Slf4j
 public class ParamsValidator {
-
-    private static final Logger logger = LoggerFactory.getLogger(ParamsValidator.class);
 
     private static final int EXPECTED_COUNT = 3;
     private static final URL DEFAULT_URL = getDefaultImage();
@@ -43,9 +41,9 @@ public class ParamsValidator {
     private static URL getDefaultImage() {
         final URL defaultURL = ParamsValidator.class.getClassLoader().getResource("java-logo.jpeg");
         if (defaultURL != null) {
-            logger.debug("Default image URL = {}", defaultURL);
+            log.debug("Default image URL = {}", defaultURL);
         } else {
-            logger.error("Default image is not found!");
+            log.error("Default image is not found!");
         }
         return defaultURL;
     }
@@ -90,7 +88,7 @@ public class ParamsValidator {
         try {
             return Integer.parseInt(value, 10);
         } catch (NumberFormatException e) {
-            logger.error(e.getLocalizedMessage(), e);
+            log.error(e.getLocalizedMessage(), e);
             throw new IllegalArgumentException(String.format("The %s has an invalid format or value", paramName), e);
         }
     }

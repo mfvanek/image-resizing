@@ -9,19 +9,17 @@ import com.mfvanek.image.resizing.enums.ResizeType;
 import com.mfvanek.image.resizing.interfaces.ImageParams;
 import lombok.Getter;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
 
+@Slf4j
 @Getter
 @ToString
 public class ResizeParams implements ImageParams {
-
-    private static final Logger logger = LoggerFactory.getLogger(ResizeParams.class);
 
     private final String pathToFile;
     private final String pathToFileLowercased;
@@ -30,7 +28,7 @@ public class ResizeParams implements ImageParams {
     private final boolean convertToGrayscale;
 
     private ResizeParams(String pathToFile, Dimension dimension, ResizeType algorithm, boolean convertToGrayscale) {
-        logger.debug("Constructing ResizeParams with: pathToFile = {}, dimension = {}, algorithm = {}, convertToGrayscale = {}",
+        log.debug("Constructing ResizeParams with: pathToFile = {}, dimension = {}, algorithm = {}, convertToGrayscale = {}",
                 pathToFile, dimension, algorithm, convertToGrayscale);
         validatePath(pathToFile);
 

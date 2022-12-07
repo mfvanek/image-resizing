@@ -27,7 +27,7 @@ public interface GraphicsProvider {
     BufferedImage loadImage(URL url);
 
     default BufferedImage loadImage(ImageParams params) {
-        BufferedImage img;
+        final BufferedImage img;
         try {
             if (params.isSimilarToURL()) {
                 img = loadImage(params.toURI().toURL());

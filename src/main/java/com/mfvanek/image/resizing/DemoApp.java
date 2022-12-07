@@ -11,8 +11,7 @@ import com.mfvanek.image.resizing.interfaces.ImageResizer;
 import com.mfvanek.image.resizing.pojos.ResizeParams;
 import com.mfvanek.image.resizing.resizers.ResizersFactory;
 import com.mfvanek.image.resizing.utils.ParamsValidator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -25,21 +24,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 
-/**
- * TODO Consider to use any third party library https://www.baeldung.com/java-images
- *
- * For instance:
- * file:/C:/src/image-resizing/target/classes/java-logo.jpeg
- * file:///C:/Users/IVAN~1.VAK/AppData/Local/Temp/resized_images_7304718956539175727/resized_java-logo.jpeg
- */
+// TODO Consider to use any third party library https://www.baeldung.com/java-images
+@Slf4j
 public class DemoApp {
 
-    private static final Logger logger = LoggerFactory.getLogger(DemoApp.class);
     private static Path tmpDir;
 
     public static void main(String[] args) {
         System.out.println("Hi there!\nThis is demo application for image resizing");
-        System.out.print(String.format("Started with args[%d] = ", args.length));
+        System.out.printf("Started with args[%d] = ", args.length);
         Arrays.stream(args).forEach(a -> System.out.print(a + " "));
         System.out.println();
 
@@ -64,14 +57,14 @@ public class DemoApp {
             ResizeParams resizeParams = ParamsValidator.getInstance(args).useDefaultIfNeed().withAlgorithm(ResizeType.RAW).validate();
             process(graphicsProvider, resizeParams);
         } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
+            log.error(e.getLocalizedMessage(), e);
         }
     }
 
     private static void process(final GraphicsProvider graphicsProvider, final ResizeParams resizeParams) {
         try {
             if (graphicsProvider.isFormatNotSupported(resizeParams.getExtension())) {
-                System.out.println(String.format("File format '%s' is not supported", resizeParams.getExtension()));
+                System.out.printf("File format '%s' is not supported%n", resizeParams.getExtension());
                 return;
             }
 
@@ -81,13 +74,13 @@ public class DemoApp {
                 final long startTime = System.nanoTime();
                 final BufferedImage outputImage = imageResizer.resize(img, resizeParams);
                 final long endTime = System.nanoTime();
-                logger.debug(String.format("Resize is completed. Elapsed time %d microseconds", (endTime - startTime) / 1_000_000));
+                log.debug(String.format("Resize is completed. Elapsed time %d microseconds", (endTime - startTime) / 1_000_000));
                 saveToFile(resizeParams, outputImage);
             } else {
-                logger.error("Unable to load given image");
+                log.error("Unable to load given image");
             }
         } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
+            log.error(e.getLocalizedMessage(), e);
         }
     }
 

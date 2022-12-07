@@ -7,16 +7,14 @@ package com.mfvanek.image.resizing.resizers;
 
 import com.mfvanek.image.resizing.interfaces.ImageParams;
 import com.mfvanek.image.resizing.interfaces.ImageResizer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
+@Slf4j
 abstract class AbstractImageResizer implements ImageResizer {
-
-    private static final Logger logger = LoggerFactory.getLogger(AbstractImageResizer.class);
 
     private final int hints;
 
@@ -34,7 +32,7 @@ abstract class AbstractImageResizer implements ImageResizer {
             g2d = resized.createGraphics();
             g2d.drawImage(tmp, 0, 0, null);
         } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
+            log.error(e.getLocalizedMessage(), e);
         } finally {
             if (g2d != null) {
                 g2d.dispose();

@@ -6,8 +6,7 @@
 package com.mfvanek.image.resizing.resizers;
 
 import com.mfvanek.image.resizing.interfaces.GraphicsProvider;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
@@ -21,10 +20,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 // TODO tests
+@Slf4j
 @Component("graphicsProvider")
 class AwtGraphicsProvider implements GraphicsProvider {
-
-    private static final Logger logger = LoggerFactory.getLogger(AwtGraphicsProvider.class);
 
     AwtGraphicsProvider() {}
 
@@ -51,7 +49,7 @@ class AwtGraphicsProvider implements GraphicsProvider {
             File file = new File(uri);
             return ImageIO.read(file);
         } catch (IOException e) {
-            logger.error(e.getLocalizedMessage(), e);
+            log.error(e.getLocalizedMessage(), e);
             throw new RuntimeException(e);
         }
     }
@@ -61,7 +59,7 @@ class AwtGraphicsProvider implements GraphicsProvider {
         try {
             return ImageIO.read(url);
         } catch (IOException e) {
-            logger.error(e.getLocalizedMessage(), e);
+            log.error(e.getLocalizedMessage(), e);
             throw new RuntimeException(e);
         }
     }
