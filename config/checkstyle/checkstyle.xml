@@ -20,7 +20,7 @@
     </module>
     <module name="Header">
         <property name="header"
-                  value="/*\n * Copyright (c) 2018-2022. Ivan Vakhrushev. All rights reserved.\n * https://github.com/mfvanek/two-levels-caching\n *\n * Licensed under the Apache License 2.0\n */"/>
+                  value="/*\n * Copyright (c) 2018-2022. Ivan Vakhrushev. All rights reserved.\n * https://github.com/mfvanek/image-resizing\n */"/>
         <property name="fileExtensions" value="java"/>
     </module>
     <module name="NewlineAtEndOfFile"/>
@@ -54,7 +54,7 @@
         <module name="ExecutableStatementCount"/>
         <module name="ExplicitInitialization"/>
         <!-- <module name="FinalClass"/> invalid -->
-        <module name="FinalLocalVariable"/>
+        <!-- <module name="FinalLocalVariable"/> TODO -->
         <module name="FinalParameters"/>
         <!-- <module name="HiddenField"/> invalid -->
         <!-- <module name="HideUtilityClassConstructor"/> invalid -->
@@ -210,7 +210,7 @@
         <module name="AbbreviationAsWordInName">
             <property name="ignoreFinal" value="false"/>
             <property name="allowedAbbreviationLength" value="0"/>
-            <property name="allowedAbbreviations" value="LFU"/>
+            <property name="allowedAbbreviations" value="URL,URI"/>
             <property name="tokens"
                       value="CLASS_DEF, INTERFACE_DEF, ENUM_DEF, ANNOTATION_DEF, ANNOTATION_FIELD_DEF, PARAMETER_DEF, VARIABLE_DEF, METHOD_DEF, PATTERN_VARIABLE_DEF, RECORD_DEF, RECORD_COMPONENT_DEF"/>
         </module>
@@ -218,15 +218,18 @@
         <module name="VariableDeclarationUsageDistance">
             <property name="allowedDistance" value="4"/>
         </module>
-        <!-- <module name="ImportOrder"/> invalid -->
-        <module name="CustomImportOrder">
-            <property name="sortImportsInGroupAlphabetically" value="true"/>
-            <property name="separateLineBetweenGroups" value="true"/>
-            <property name="customImportOrderRules" value="THIRD_PARTY_PACKAGE###STANDARD_JAVA_PACKAGE###STATIC"/>
-            <property name="tokens" value="IMPORT, STATIC_IMPORT, PACKAGE_DEF"/>
+        <module name="ImportOrder">
+            <property name="groups" value="/\./, /(javax\.|java\.)/"/>
+            <property name="option" value="bottom"/>
+            <property name="ordered" value="false"/>
+            <property name="separated" value="true"/>
+            <property name="sortStaticImportsAlphabetically" value="true"/>
         </module>
+        <!--
+        <module name="CustomImportOrder"/> invalid -->
         <module name="UnusedImports"/>
         <module name="RedundantImport"/>
+        <!-- TODO
         <module name="IllegalImport">
             <property name="id" value="IllegalImportMain"/>
             <property name="regexp" value="true"/>
@@ -239,6 +242,7 @@
                 ^org\.springframework\.test\.web\.servlet\.MockMvc"/>
             <property name="illegalPkgs" value="^org\.hamcrest"/>
         </module>
+        -->
         <module name="IllegalImport">
             <property name="id" value="IllegalImportJavaIo"/>
             <property name="regexp" value="true"/>

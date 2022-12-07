@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2018. Ivan Vakhrushev. All rights reserved.
- * https://github.com/mfvanek
+ * Copyright (c) 2018-2022. Ivan Vakhrushev. All rights reserved.
+ * https://github.com/mfvanek/image-resizing
  */
 
 package com.mfvanek.image.resizing.utils;
@@ -14,7 +14,7 @@ import java.net.URL;
 import java.util.Objects;
 
 @Slf4j
-public class ParamsValidator {
+public final class ParamsValidator {
 
     private static final int EXPECTED_COUNT = 3;
     private static final URL DEFAULT_URL = getDefaultImage();
@@ -26,7 +26,7 @@ public class ParamsValidator {
     private int height = 100;
     private ResizeType algorithm = ResizeType.RAW;
 
-    private ParamsValidator(String[] args) {
+    private ParamsValidator(final String... args) {
         this.args = args;
         this.canUseDefault = false;
         try {
@@ -39,7 +39,7 @@ public class ParamsValidator {
     }
 
     private static URL getDefaultImage() {
-        final URL defaultURL = ParamsValidator.class.getClassLoader().getResource("java-logo.jpeg");
+        final URL defaultURL = Thread.currentThread().getContextClassLoader().getResource("java-logo.jpeg");
         if (defaultURL != null) {
             log.debug("Default image URL = {}", defaultURL);
         } else {
@@ -48,7 +48,7 @@ public class ParamsValidator {
         return defaultURL;
     }
 
-    public static ParamsValidator getInstance(String[] args) {
+    public static ParamsValidator builder(final String... args) {
         return new ParamsValidator(args);
     }
 
@@ -57,12 +57,12 @@ public class ParamsValidator {
         return this;
     }
 
-    public ParamsValidator withAlgorithm(ResizeType algorithm) {
+    public ParamsValidator withAlgorithm(final ResizeType algorithm) {
         this.algorithm = algorithm;
         return this;
     }
 
-    public ParamsValidator withPath(String pathToFile) {
+    public ParamsValidator withPath(final String pathToFile) {
         this.pathToFile = pathToFile;
         return this;
     }
@@ -84,7 +84,7 @@ public class ParamsValidator {
         return ResizeParams.newWithAlgorithm(pathToFile, width, height, algorithm);
     }
 
-    private static int toDimensionValue(String value, String paramName) {
+    private static int toDimensionValue(final String value, final String paramName) {
         try {
             return Integer.parseInt(value, 10);
         } catch (NumberFormatException e) {

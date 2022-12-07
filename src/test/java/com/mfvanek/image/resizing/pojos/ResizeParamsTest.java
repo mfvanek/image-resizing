@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2018. Ivan Vakhrushev. All rights reserved.
- * https://github.com/mfvanek
+ * Copyright (c) 2018-2022. Ivan Vakhrushev. All rights reserved.
+ * https://github.com/mfvanek/image-resizing
  */
 
 package com.mfvanek.image.resizing.pojos;
@@ -72,7 +72,7 @@ class ResizeParamsTest {
     }
 
     @Test
-    void getWidth_Height_Algorithm() {
+    void getWidthAndHeightAlgorithm() {
         ResizeParams resizeParams = ResizeParams.newWithDefaultDimension("https://any-web-site/any-catalog/anyfile.PnG");
         assertEquals(500, resizeParams.getWidth());
         assertEquals(500, resizeParams.getHeight());

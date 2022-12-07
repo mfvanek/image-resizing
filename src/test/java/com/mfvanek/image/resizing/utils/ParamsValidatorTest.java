@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2018. Ivan Vakhrushev. All rights reserved.
- * https://github.com/mfvanek
+ * Copyright (c) 2018-2022. Ivan Vakhrushev. All rights reserved.
+ * https://github.com/mfvanek/image-resizing
  */
 
 package com.mfvanek.image.resizing.utils;
@@ -18,17 +18,17 @@ class ParamsValidatorTest {
 
     @Test
     void withoutArgs() {
-        NullPointerException e1 = assertThrows(NullPointerException.class, () -> ParamsValidator.getInstance(null).validate());
+        NullPointerException e1 = assertThrows(NullPointerException.class, () -> ParamsValidator.builder(null).validate());
         assertEquals("Parameter 'args' cannot be null", e1.getMessage());
 
-        IllegalArgumentException e2 = assertThrows(IllegalArgumentException.class, () -> ParamsValidator.getInstance(new String[0]).validate());
+        IllegalArgumentException e2 = assertThrows(IllegalArgumentException.class, () -> ParamsValidator.builder(new String[0]).validate());
         assertEquals("Invalid number of arguments; should be 3 arguments: path-to-image, width and height", e2.getMessage());
     }
 
     @Test
     void withCorrectArgs() {
         String[] params = {"file:/any-picture.BMP", "111", "222"};
-        ResizeParams resizeParams = ParamsValidator.getInstance(params).validate();
+        ResizeParams resizeParams = ParamsValidator.builder(params).validate();
         assertNotNull(resizeParams);
         assertTrue(resizeParams.getPathToFile().endsWith("any-picture.BMP"));
         assertEquals(111, resizeParams.getWidth());
@@ -39,29 +39,29 @@ class ParamsValidatorTest {
     @Test
     void withRedundantArgs() {
         String[] params = {"", "1", "2", "3"};
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> ParamsValidator.getInstance(params).validate());
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> ParamsValidator.builder(params).validate());
         assertEquals("Invalid number of arguments; should be 3 arguments: path-to-image, width and height", e.getMessage());
     }
 
     @Test
     void withIncompleteArgs() {
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> ParamsValidator.getInstance(new String[1]).validate());
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> ParamsValidator.builder(new String[1]).validate());
         assertEquals("Invalid number of arguments; should be 3 arguments: path-to-image, width and height", e.getMessage());
 
-        e = assertThrows(IllegalArgumentException.class, () -> ParamsValidator.getInstance(new String[2]).validate());
+        e = assertThrows(IllegalArgumentException.class, () -> ParamsValidator.builder(new String[2]).validate());
         assertEquals("Invalid number of arguments; should be 3 arguments: path-to-image, width and height", e.getMessage());
 
-        e = assertThrows(IllegalArgumentException.class, () -> ParamsValidator.getInstance(new String[3]).validate());
+        e = assertThrows(IllegalArgumentException.class, () -> ParamsValidator.builder(new String[3]).validate());
         assertEquals("The width has an invalid format or value", e.getMessage());
 
         String[] params = {"", "1", null};
-        e = assertThrows(IllegalArgumentException.class, () -> ParamsValidator.getInstance(params).validate());
+        e = assertThrows(IllegalArgumentException.class, () -> ParamsValidator.builder(params).validate());
         assertEquals("The height has an invalid format or value", e.getMessage());
     }
 
     @Test
     void useDefault() {
-        ResizeParams resizeParams = ParamsValidator.getInstance(new String[0]).useDefaultIfNeed().validate();
+        ResizeParams resizeParams = ParamsValidator.builder(new String[0]).useDefaultIfNeed().validate();
         assertNotNull(resizeParams);
         assertTrue(resizeParams.getPathToFile().endsWith("java-logo.jpeg"));
         assertEquals(200, resizeParams.getWidth());
@@ -71,14 +71,14 @@ class ParamsValidatorTest {
 
     @Test
     void withAlgorithm() {
-        ResizeParams resizeParams = ParamsValidator.getInstance(new String[0]).useDefaultIfNeed().withAlgorithm(ResizeType.KEEP_ASPECT_RATIO).validate();
+        ResizeParams resizeParams = ParamsValidator.builder(new String[0]).useDefaultIfNeed().withAlgorithm(ResizeType.KEEP_ASPECT_RATIO).validate();
         assertNotNull(resizeParams);
         assertEquals(ResizeType.KEEP_ASPECT_RATIO, resizeParams.getAlgorithm());
     }
 
     @Test
     void withPath() {
-        ResizeParams resizeParams = ParamsValidator.getInstance(new String[0]).useDefaultIfNeed().withPath("file:/any-picture.bmp").validate();
+        ResizeParams resizeParams = ParamsValidator.builder(new String[0]).useDefaultIfNeed().withPath("file:/any-picture.bmp").validate();
         assertNotNull(resizeParams);
         assertTrue(resizeParams.getPathToFile().endsWith("any-picture.bmp"));
     }

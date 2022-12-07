@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2018. Ivan Vakhrushev. All rights reserved.
- * https://github.com/mfvanek
+ * Copyright (c) 2018-2022. Ivan Vakhrushev. All rights reserved.
+ * https://github.com/mfvanek/image-resizing
  */
 
 package com.mfvanek.image.resizing.pojos;
@@ -28,7 +28,10 @@ public class ResizeParams implements ImageParams {
     private final ResizeType algorithm;
     private final boolean convertToGrayscale;
 
-    private ResizeParams(String pathToFile, Dimension dimension, ResizeType algorithm, boolean convertToGrayscale) {
+    protected ResizeParams(final String pathToFile,
+                           final Dimension dimension,
+                           final ResizeType algorithm,
+                           final boolean convertToGrayscale) {
         log.debug("Constructing ResizeParams with: pathToFile = {}, dimension = {}, algorithm = {}, convertToGrayscale = {}",
                 pathToFile, dimension, algorithm, convertToGrayscale);
         validatePath(pathToFile);
@@ -40,15 +43,20 @@ public class ResizeParams implements ImageParams {
         this.convertToGrayscale = convertToGrayscale;
     }
 
-    public static ResizeParams newWithAlgorithm(String pathToFile, int width, int height, ResizeType algorithm) {
+    public static ResizeParams newWithAlgorithm(final String pathToFile,
+                                                final int width,
+                                                final int height,
+                                                final ResizeType algorithm) {
         return new ResizeParams(pathToFile, new Dimension(width, height), algorithm, true);
     }
 
-    public static ResizeParams newWithRaw(String pathToFile, int width, int height) {
+    public static ResizeParams newWithRaw(final String pathToFile,
+                                          final int width,
+                                          final int height) {
         return newWithAlgorithm(pathToFile, width, height, ResizeType.RAW);
     }
 
-    public static ResizeParams newWithDefaultDimension(String pathToFile) {
+    public static ResizeParams newWithDefaultDimension(final String pathToFile) {
         return newWithRaw(pathToFile, 500, 500);
     }
 
@@ -97,7 +105,7 @@ public class ResizeParams implements ImageParams {
         return algorithm;
     }
 
-    private static void validatePath(String pathToFile) {
+    private static void validatePath(final String pathToFile) {
         Objects.requireNonNull(pathToFile, "Path to image cannot be null");
 
         if (pathToFile.length() == 0) {
@@ -109,7 +117,7 @@ public class ResizeParams implements ImageParams {
         }
     }
 
-    public static ImageParams from(ImageParams oldParams, Dimension newDimension) {
+    public static ImageParams from(final ImageParams oldParams, final Dimension newDimension) {
         return new ResizeParams(oldParams.getPathToFile(), newDimension, oldParams.getAlgorithm(), oldParams.isConvertToGrayscale());
     }
 }

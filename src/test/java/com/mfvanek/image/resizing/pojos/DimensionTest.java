@@ -1,51 +1,58 @@
 /*
- * Copyright (c) 2018. Ivan Vakhrushev. All rights reserved.
- * https://github.com/mfvanek
+ * Copyright (c) 2018-2022. Ivan Vakhrushev. All rights reserved.
+ * https://github.com/mfvanek/image-resizing
  */
 
 package com.mfvanek.image.resizing.pojos;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class DimensionTest {
 
     @Test
     void constructor() {
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> new Dimension(0, 0));
-        assertEquals("Width should be positive", e.getLocalizedMessage());
+        assertThatThrownBy(() -> new Dimension(0, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Width should be positive");
 
-        e = assertThrows(IllegalArgumentException.class, () -> new Dimension(-1, 0));
-        assertEquals("Width should be positive", e.getLocalizedMessage());
+        assertThatThrownBy(() -> new Dimension(-1, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Width should be positive");
 
-        e = assertThrows(IllegalArgumentException.class, () -> new Dimension(1, 0));
-        assertEquals("Height should be positive", e.getLocalizedMessage());
+        assertThatThrownBy(() -> new Dimension(1, 0))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Height should be positive");
+
+        assertThatThrownBy(() -> new Dimension(1, -1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Height should be positive");
     }
 
     @Test
     void widthAndHeight() {
-        Dimension d1 = new Dimension(100);
-        assertEquals(100, d1.getWidth());
-        assertEquals(100, d1.getHeight());
+        assertThat(new Dimension(100))
+                .hasToString("Dimension(width=100, height=100)")
+                .satisfies(d -> {
+                    assertThat(d.getWidth()).isEqualTo(100);
+                    assertThat(d.getHeight()).isEqualTo(100);
+                });
 
-        Dimension d2 = new Dimension(123, 321);
-        assertEquals(123, d2.getWidth());
-        assertEquals(321, d2.getHeight());
+        assertThat(new Dimension(123, 321))
+                .hasToString("Dimension(width=123, height=321)")
+                .satisfies(d -> {
+                    assertThat(d.getWidth()).isEqualTo(123);
+                    assertThat(d.getHeight()).isEqualTo(321);
+                });
     }
 
     @Test
-    void equals() {
-        Dimension d1 = new Dimension(100);
-        Dimension d2 = new Dimension(123, 321);
-        assertEquals(d1, d1);
-        assertEquals(d1, new Dimension(100));
-        assertNotEquals(d1, d2);
-
-        assertEquals(d1.hashCode(), d1.hashCode());
-        assertEquals(d1.hashCode(), new Dimension(100).hashCode());
-        assertNotEquals(d1.hashCode(), d2.hashCode());
+    @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
+    void equalsHashCodeShouldAdhereContracts() {
+        EqualsVerifier.forClass(Dimension.class)
+                .verify();
     }
 }

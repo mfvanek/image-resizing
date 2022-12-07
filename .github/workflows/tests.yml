@@ -23,3 +23,8 @@ jobs:
                     cache: 'maven'
             -   name: Build with Maven
                 run: mvn clean verify
+            -   name: Upload coverage to Codecov
+                uses: codecov/codecov-action@v3
+                with:
+                    fail_ci_if_error: true
+                    verbose: false

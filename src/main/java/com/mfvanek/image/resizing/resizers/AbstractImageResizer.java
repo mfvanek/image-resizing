@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2018. Ivan Vakhrushev. All rights reserved.
- * https://github.com/mfvanek
+ * Copyright (c) 2018-2022. Ivan Vakhrushev. All rights reserved.
+ * https://github.com/mfvanek/image-resizing
  */
 
 package com.mfvanek.image.resizing.resizers;
@@ -18,12 +18,12 @@ abstract class AbstractImageResizer implements ImageResizer {
 
     private final int hints;
 
-    AbstractImageResizer(int hints) {
+    AbstractImageResizer(final int hints) {
         this.hints = hints;
     }
 
     @Override
-    public BufferedImage resize(BufferedImage inputImage, ImageParams resizeParams) {
+    public BufferedImage resize(final BufferedImage inputImage, final ImageParams resizeParams) {
         final Image tmp = inputImage.getScaledInstance(resizeParams.getWidth(), resizeParams.getHeight(), hints);
         final BufferedImage resized = new BufferedImage(resizeParams.getWidth(), resizeParams.getHeight(),
                 resizeParams.isConvertToGrayscale() ? BufferedImage.TYPE_BYTE_GRAY : inputImage.getType());
@@ -31,8 +31,6 @@ abstract class AbstractImageResizer implements ImageResizer {
         try {
             g2d = resized.createGraphics();
             g2d.drawImage(tmp, 0, 0, null);
-        } catch (Exception e) {
-            log.error(e.getLocalizedMessage(), e);
         } finally {
             if (g2d != null) {
                 g2d.dispose();

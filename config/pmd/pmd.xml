@@ -23,6 +23,7 @@
         <exclude name="CommentDefaultAccessModifier"/>
         <exclude name="LongVariable"/>
         <exclude name="ShortVariable"/>
+        <exclude name="LocalVariableCouldBeFinal"/> <!-- TODO -->
     </rule>
 
     <rule ref="category/java/codestyle.xml/ClassNamingConventions">
@@ -55,6 +56,7 @@
         <exclude name="LawOfDemeter"/>
         <exclude name="LoosePackageCoupling"/>
         <exclude name="AvoidCatchingGenericException"/>
+        <exclude name="AvoidThrowingRawExceptionTypes"/>
         <exclude name="UseUtilityClass"/>
     </rule>
 
@@ -85,6 +87,7 @@
 
     <rule ref="category/java/errorprone.xml">
         <exclude name="DataflowAnomalyAnalysis"/>
+        <exclude name="AvoidDuplicateLiterals"/>
     </rule>
 
     <rule ref="category/java/errorprone.xml/EqualsNull">

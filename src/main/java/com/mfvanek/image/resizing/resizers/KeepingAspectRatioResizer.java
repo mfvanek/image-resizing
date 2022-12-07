@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2018. Ivan Vakhrushev. All rights reserved.
- * https://github.com/mfvanek
+ * Copyright (c) 2018-2022. Ivan Vakhrushev. All rights reserved.
+ * https://github.com/mfvanek/image-resizing
  */
 
 package com.mfvanek.image.resizing.resizers;
@@ -22,7 +22,7 @@ class KeepingAspectRatioResizer extends AbstractImageResizer {
     }
 
     @Override
-    public BufferedImage resize(BufferedImage inputImage, ImageParams resizeParams) {
+    public BufferedImage resize(final BufferedImage inputImage, final ImageParams resizeParams) {
         // TODO More smart algorithm is needed for scaling
         final int newWidth = resizeParams.getWidth();
         final double aspectRatio = inputImage.getWidth() / (double) inputImage.getHeight();

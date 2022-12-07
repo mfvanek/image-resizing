@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2018. Ivan Vakhrushev. All rights reserved.
- * https://github.com/mfvanek
+ * Copyright (c) 2018-2022. Ivan Vakhrushev. All rights reserved.
+ * https://github.com/mfvanek/image-resizing
  */
 
 package com.mfvanek.image.resizing.resizers;
@@ -8,38 +8,50 @@ package com.mfvanek.image.resizing.resizers;
 import com.mfvanek.image.resizing.ResizersConfig;
 import com.mfvanek.image.resizing.enums.ResizeType;
 import com.mfvanek.image.resizing.interfaces.GraphicsProvider;
-import com.mfvanek.image.resizing.interfaces.ImageResizer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {ResizersConfig.class})
+@ContextConfiguration(classes = ResizersConfig.class)
 class ResizersFactoryTest {
 
     @Autowired
     private ApplicationContext ctx;
 
-    @Test
-    void createImageResizer() {
-        final ImageResizer imageResizerRaw = ResizersFactory.getByAlgorithm(ResizeType.RAW);
-        assertNotNull(imageResizerRaw);
-
-        final ImageResizer imageResizerAspectRatio = ResizersFactory.getByAlgorithm(ResizeType.KEEP_ASPECT_RATIO);
-        assertNotNull(imageResizerAspectRatio);
-
-        assertNotEquals(imageResizerRaw.getClass(), imageResizerAspectRatio.getClass());
+    @ParameterizedTest
+    @EnumSource(ResizeType.class)
+    void forEachResizeTypeShouldPresentImplementation(final ResizeType resizeType) {
+        assertThat(ResizersFactory.getByAlgorithm(resizeType))
+                .isNotNull()
+                .isInstanceOf(AbstractImageResizer.class);
     }
 
     @Test
     void createGraphicsProvider() {
         final GraphicsProvider graphicsProvider = ctx.getBean(GraphicsProvider.class);
-        assertNotNull(graphicsProvider);
+        assertThat(graphicsProvider)
+                .isNotNull()
+                .isInstanceOf(AwtGraphicsProvider.class);
+    }
+
+    @Test
+    void correctness() {
+        final Set<Class<?>> resizers = new HashSet<>();
+        for (final ResizeType resizeType : ResizeType.values()) {
+            resizers.add(ResizersFactory.getByAlgorithm(resizeType).getClass());
+        }
+        assertThat(resizers)
+                .hasSameSizeAs(ResizeType.values());
     }
 }

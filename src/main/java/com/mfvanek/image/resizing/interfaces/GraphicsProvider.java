@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2018. Ivan Vakhrushev. All rights reserved.
- * https://github.com/mfvanek
+ * Copyright (c) 2018-2022. Ivan Vakhrushev. All rights reserved.
+ * https://github.com/mfvanek/image-resizing
  */
 
 package com.mfvanek.image.resizing.interfaces;
@@ -18,7 +18,7 @@ public interface GraphicsProvider {
 
     boolean isFormatSupported(String imageFormat);
 
-    default boolean isFormatNotSupported(String imageFormat) {
+    default boolean isFormatNotSupported(final String imageFormat) {
         return !isFormatSupported(imageFormat);
     }
 
@@ -26,7 +26,7 @@ public interface GraphicsProvider {
 
     BufferedImage loadImage(URL url);
 
-    default BufferedImage loadImage(ImageParams params) {
+    default BufferedImage loadImage(final ImageParams params) {
         final BufferedImage img;
         try {
             if (params.isSimilarToURL()) {
