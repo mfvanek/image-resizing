@@ -7,7 +7,7 @@ package com.mfvanek.image.resizing.resizers;
 
 import com.mfvanek.image.resizing.enums.ResizeType;
 import com.mfvanek.image.resizing.interfaces.ImageResizer;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -16,15 +16,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 @Service
+@RequiredArgsConstructor
 public final class ResizersFactory {
 
     private static final ConcurrentMap<ResizeType, ImageResizer> RESIZERS_CACHE = new ConcurrentHashMap<>();
 
-    @Autowired
-    private List<ImageResizer> resizers;
-
-    private ResizersFactory() {
-    }
+    private final List<ImageResizer> resizers;
 
     @PostConstruct
     public void init() {

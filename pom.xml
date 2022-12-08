@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <java.version>8</java.version>
+        <java.version>11</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.release>${java.version}</maven.compiler.release>
@@ -125,7 +125,7 @@
                                     <version>[3.8,)</version>
                                 </requireMavenVersion>
                                 <requireJavaVersion>
-                                    <version>[8,)</version>
+                                    <version>[11,)</version>
                                 </requireJavaVersion>
                             </rules>
                         </configuration>
@@ -310,7 +310,7 @@
                                         <limit>
                                             <counter>INSTRUCTION</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.50</minimum>
+                                            <minimum>0.54</minimum>
                                         </limit>
                                         <limit>
                                             <counter>BRANCH</counter>
@@ -325,12 +325,12 @@
                                         <limit>
                                             <counter>METHOD</counter>
                                             <value>MISSEDCOUNT</value>
-                                            <maximum>17</maximum>
+                                            <maximum>15</maximum>
                                         </limit>
                                         <limit>
                                             <counter>LINE</counter>
                                             <value>MISSEDCOUNT</value>
-                                            <maximum>90</maximum>
+                                            <maximum>85</maximum>
                                         </limit>
                                     </limits>
                                 </rule>
