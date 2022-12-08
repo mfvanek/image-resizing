@@ -1,86 +1,103 @@
 /*
- * Copyright (c) 2018. Ivan Vakhrushev. All rights reserved.
- * https://github.com/mfvanek
+ * Copyright (c) 2018-2022. Ivan Vakhrushev. All rights reserved.
+ * https://github.com/mfvanek/image-resizing
  */
 
 package com.mfvanek.image.resizing.pojos;
 
 import com.mfvanek.image.resizing.enums.ResizeType;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ResizeParamsTest {
 
     @Test
     void withInvalidPath() {
-        NullPointerException ex = assertThrows(NullPointerException.class, () -> ResizeParams.newWithDefaultDimension(null));
-        assertEquals("Path to image cannot be null", ex.getMessage());
+        assertThatThrownBy(() -> ResizeParams.newWithDefaultDimension(null))
+                .isInstanceOf(NullPointerException.class)
+                .hasMessage("Path to image cannot be null");
 
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> ResizeParams.newWithDefaultDimension(""));
-        assertEquals("Path to image cannot be empty", e.getMessage());
+        assertThatThrownBy(() -> ResizeParams.newWithDefaultDimension(""))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Path to image cannot be empty");
 
-        e = assertThrows(IllegalArgumentException.class, () -> ResizeParams.newWithDefaultDimension("invalid path"));
-        assertEquals("Path to image should starts with 'file' or 'http'", e.getMessage());
+        assertThatThrownBy(() -> ResizeParams.newWithDefaultDimension("invalid path"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Path to image should starts with 'file' or 'http'");
     }
 
     @Test
     void isSimilarToURL() {
-        ResizeParams resizeParams = ResizeParams.newWithDefaultDimension("https://any-web-site/any-catalog/anyfile.png");
-        assertTrue(resizeParams.isSimilarToURL());
+        assertThat(ResizeParams.newWithDefaultDimension("https://any-web-site/any-catalog/anyfile.png"))
+                .isNotNull()
+                .satisfies(r -> assertThat(r.isSimilarToURL()).isTrue());
 
-        resizeParams = ResizeParams.newWithDefaultDimension("file:/any-web-site/any-catalog/anyfile.png");
-        assertFalse(resizeParams.isSimilarToURL());
+        assertThat(ResizeParams.newWithDefaultDimension("file:/any-web-site/any-catalog/anyfile.png"))
+                .isNotNull()
+                .satisfies(r -> assertThat(r.isSimilarToURL()).isFalse());
     }
 
     @Test
     void getExtension() {
-        ResizeParams resizeParams = ResizeParams.newWithDefaultDimension("https://any-web-site/any-catalog/anyfile.png");
-        assertEquals("png", resizeParams.getExtension());
+        assertThat(ResizeParams.newWithDefaultDimension("https://any-web-site/any-catalog/anyfile.png"))
+                .isNotNull()
+                .satisfies(r -> assertThat(r.getExtension()).isEqualTo("png"));
 
-        resizeParams = ResizeParams.newWithDefaultDimension("file:///C:/Users/IVAN~1.VAK/AppData/Local/Temp/resized_images_7304718956539175727/resized_java-logo.JPEG");
-        assertEquals("jpeg", resizeParams.getExtension());
+        assertThat(ResizeParams.newWithDefaultDimension("file:///C:/Users/IVAN~1.VAK/AppData/Local/Temp/resized_images_7304718956539175727/resized_java-logo.JPEG"))
+                .isNotNull()
+                .satisfies(r -> assertThat(r.getExtension()).isEqualTo("jpeg"));
     }
 
     @Test
-    void toURI() throws URISyntaxException {
-        ResizeParams resizeParams = ResizeParams.newWithDefaultDimension("https://any-web-site/any-catalog/anyfile.PnG");
-        assertEquals(new URI("https://any-web-site/any-catalog/anyfile.PnG"), resizeParams.toURI());
+    @SneakyThrows
+    void toURI() {
+        assertThat(ResizeParams.newWithDefaultDimension("https://any-web-site/any-catalog/anyfile.PnG"))
+                .isNotNull()
+                .satisfies(r -> assertThat(r.toURI()).isEqualTo(new URI("https://any-web-site/any-catalog/anyfile.PnG")));
 
-        resizeParams = ResizeParams.newWithDefaultDimension("file:///C:/Users/IVAN~1.VAK/AppData/Local/Temp/resized_images_7304718956539175727/resized_java-logo.JPEG");
-        assertEquals(new URI("file:///C:/Users/IVAN~1.VAK/AppData/Local/Temp/resized_images_7304718956539175727/resized_java-logo.JPEG"), resizeParams.toURI());
+        assertThat(ResizeParams.newWithDefaultDimension("file:///C:/Users/IVAN~1.VAK/AppData/Local/Temp/resized_images_7304718956539175727/resized_java-logo.JPEG"))
+                .isNotNull()
+                .satisfies(r -> assertThat(r.toURI()).isEqualTo(new URI("file:///C:/Users/IVAN~1.VAK/AppData/Local/Temp/resized_images_7304718956539175727/resized_java-logo.JPEG")));
 
-        assertThrows(URISyntaxException.class, () -> ResizeParams.newWithDefaultDimension("http://mw1.google.com/mw-earth-vectordb/kml-samples/gp/seattle/gigapxl/$[level]/r$[y]_c$[x].jpg").toURI());
+        final ResizeParams resizeParams = ResizeParams.newWithDefaultDimension("http://mw1.google.com/mw-earth-vectordb/kml-samples/gp/seattle/gigapxl/$[level]/r$[y]_c$[x].jpg");
+
+        assertThatThrownBy(resizeParams::toURI)
+                .isInstanceOf(URISyntaxException.class)
+                .hasMessage("Illegal character in path at index 72: http://mw1.google.com/mw-earth-vectordb/kml-samples/gp/seattle/gigapxl/$[level]/r$[y]_c$[x].jpg");
     }
 
     @Test
     void getOutputName() {
-        ResizeParams resizeParams = ResizeParams.newWithDefaultDimension("https://any-web-site/any-catalog/anyfile.PnG");
-        assertEquals("resized_anyfile.PnG", resizeParams.getOutputName());
+        assertThat(ResizeParams.newWithDefaultDimension("https://any-web-site/any-catalog/anyfile.PnG"))
+                .isNotNull()
+                .satisfies(r -> {
+                    assertThat(r.getOutputName()).isEqualTo("resized_anyfile.PnG");
+                    assertThat(r.getPathToFile()).isEqualTo("https://any-web-site/any-catalog/anyfile.PnG");
+                });
     }
 
     @Test
-    void getPathToFile() {
-        ResizeParams resizeParams = ResizeParams.newWithDefaultDimension("https://any-web-site/any-catalog/anyfile.PnG");
-        assertEquals("https://any-web-site/any-catalog/anyfile.PnG", resizeParams.getPathToFile());
-    }
+    void getWidthAndHeightAlgorithm() {
+        assertThat(ResizeParams.newWithDefaultDimension("https://any-web-site/any-catalog/anyfile.PnG"))
+                .isNotNull()
+                .satisfies(r -> {
+                    assertThat(r.getWidth()).isEqualTo(500);
+                    assertThat(r.getHeight()).isEqualTo(500);
+                    assertThat(r.getAlgorithm()).isEqualTo(ResizeType.RAW);
+                });
 
-    @Test
-    void getWidth_Height_Algorithm() {
-        ResizeParams resizeParams = ResizeParams.newWithDefaultDimension("https://any-web-site/any-catalog/anyfile.PnG");
-        assertEquals(500, resizeParams.getWidth());
-        assertEquals(500, resizeParams.getHeight());
-        assertEquals(ResizeType.RAW, resizeParams.getAlgorithm());
-
-        resizeParams = ResizeParams.newWithAlgorithm("https://anyfile.PnG", 100, 200, ResizeType.KEEP_ASPECT_RATIO);
-        assertEquals(100, resizeParams.getWidth());
-        assertEquals(200, resizeParams.getHeight());
-        assertEquals(ResizeType.KEEP_ASPECT_RATIO, resizeParams.getAlgorithm());
+        assertThat(ResizeParams.newWithAlgorithm("https://anyfile.PnG", 100, 200, ResizeType.KEEP_ASPECT_RATIO))
+                .isNotNull()
+                .satisfies(r -> {
+                    assertThat(r.getWidth()).isEqualTo(100);
+                    assertThat(r.getHeight()).isEqualTo(200);
+                    assertThat(r.getAlgorithm()).isEqualTo(ResizeType.KEEP_ASPECT_RATIO);
+                });
     }
 }

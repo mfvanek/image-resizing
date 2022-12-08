@@ -1,6 +1,6 @@
 /*
- * Copyright (c) 2018. Ivan Vakhrushev. All rights reserved.
- * https://github.com/mfvanek
+ * Copyright (c) 2018-2022. Ivan Vakhrushev. All rights reserved.
+ * https://github.com/mfvanek/image-resizing
  */
 
 package com.mfvanek.image.resizing;
@@ -11,9 +11,8 @@ import com.mfvanek.image.resizing.interfaces.ImageResizer;
 import com.mfvanek.image.resizing.pojos.ResizeParams;
 import com.mfvanek.image.resizing.resizers.ResizersFactory;
 import com.mfvanek.image.resizing.utils.ParamsValidator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.imageio.ImageIO;
@@ -23,79 +22,67 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 
-/**
- * TODO Consider to use any third party library https://www.baeldung.com/java-images
- *
- * For instance:
- * file:/C:/src/image-resizing/target/classes/java-logo.jpeg
- * file:///C:/Users/IVAN~1.VAK/AppData/Local/Temp/resized_images_7304718956539175727/resized_java-logo.jpeg
- */
+// TODO Consider to use any third party library https://www.baeldung.com/java-images
+@Slf4j
 public class DemoApp {
 
-    private static final Logger logger = LoggerFactory.getLogger(DemoApp.class);
     private static Path tmpDir;
 
-    public static void main(String[] args) {
-        System.out.println("Hi there!\nThis is demo application for image resizing");
-        System.out.print(String.format("Started with args[%d] = ", args.length));
-        Arrays.stream(args).forEach(a -> System.out.print(a + " "));
-        System.out.println();
+    public static void main(final String[] args) {
+        log.info("Hi there!%nThis is demo application for image resizing");
+        log.info("Started with args[{}}] = {}", args.length, String.join("", args));
 
-        final ApplicationContext ctx = new AnnotationConfigApplicationContext(ResizersConfig.class);
-
-        try {
+        try (ConfigurableApplicationContext ctx = new AnnotationConfigApplicationContext(ResizersConfig.class)) {
             final GraphicsProvider graphicsProvider = ctx.getBean(GraphicsProvider.class);
-            System.out.println("Supported formats: " + String.join(", ", graphicsProvider.getSupportedFormats()));
+            log.info("Supported formats: {}", String.join(", ", graphicsProvider.getSupportedFormats()));
 
             tmpDir = Files.createTempDirectory("resized_images_");
-            System.out.println("Output directory = " + tmpDir);
+            log.info("Output directory = {}", tmpDir);
 
             if (args.length == 0) { // when running from IDE
-                ResizeParams resizeParams = ParamsValidator.getInstance(args).
-                        useDefaultIfNeed().
-                        withAlgorithm(ResizeType.KEEP_ASPECT_RATIO).
-                        withPath("https://static.ngs.ru/news/99/preview/e88eba0dbd5cd0e30ee349a3a3c54dbd07d2b28f_712.jpg").
-                        validate();
+                final ResizeParams resizeParams = ParamsValidator.builder(args)
+                        .useDefaultIfNeed()
+                        .withAlgorithm(ResizeType.KEEP_ASPECT_RATIO)
+                        .withPath("https://static.ngs.ru/news/99/preview/e88eba0dbd5cd0e30ee349a3a3c54dbd07d2b28f_712.jpg")
+                        .validate();
                 process(graphicsProvider, resizeParams);
             }
 
-            ResizeParams resizeParams = ParamsValidator.getInstance(args).useDefaultIfNeed().withAlgorithm(ResizeType.RAW).validate();
+            final ResizeParams resizeParams = ParamsValidator.builder(args).useDefaultIfNeed().withAlgorithm(ResizeType.RAW).validate();
             process(graphicsProvider, resizeParams);
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
+        } catch (IOException e) {
+            log.error(e.getLocalizedMessage(), e);
         }
     }
 
     private static void process(final GraphicsProvider graphicsProvider, final ResizeParams resizeParams) {
         try {
             if (graphicsProvider.isFormatNotSupported(resizeParams.getExtension())) {
-                System.out.println(String.format("File format '%s' is not supported", resizeParams.getExtension()));
+                log.warn("File format '{}' is not supported", resizeParams.getExtension());
                 return;
             }
 
-            BufferedImage img = graphicsProvider.loadImage(resizeParams);
+            final BufferedImage img = graphicsProvider.loadImage(resizeParams);
             if (img != null) {
                 final ImageResizer imageResizer = ResizersFactory.getByAlgorithm(resizeParams.getAlgorithm());
                 final long startTime = System.nanoTime();
                 final BufferedImage outputImage = imageResizer.resize(img, resizeParams);
                 final long endTime = System.nanoTime();
-                logger.debug(String.format("Resize is completed. Elapsed time %d microseconds", (endTime - startTime) / 1_000_000));
+                log.debug("Resize is completed. Elapsed time {} microseconds", (endTime - startTime) / 1_000_000);
                 saveToFile(resizeParams, outputImage);
             } else {
-                logger.error("Unable to load given image");
+                log.error("Unable to load given image");
             }
-        } catch (Exception e) {
-            logger.error(e.getLocalizedMessage(), e);
+        } catch (IOException e) {
+            log.error(e.getLocalizedMessage(), e);
         }
     }
 
-    private static void saveToFile(final ResizeParams resizeParams, final BufferedImage outputImage)
-            throws IOException {
+    private static void saveToFile(final ResizeParams resizeParams, final BufferedImage outputImage) throws IOException {
         final URI outputUri = tmpDir.resolve(resizeParams.getOutputName()).toUri();
         final File outputFile = new File(outputUri);
         ImageIO.write(outputImage, resizeParams.getExtension(), outputFile);
-        System.out.println("Resized " + outputUri);
+        log.info("Resized {}", outputUri);
     }
 }

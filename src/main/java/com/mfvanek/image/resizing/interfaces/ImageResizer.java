@@ -1,10 +1,9 @@
 /*
- * Copyright (c) 2018. Ivan Vakhrushev. All rights reserved.
- * https://github.com/mfvanek
+ * Copyright (c) 2018-2022. Ivan Vakhrushev. All rights reserved.
+ * https://github.com/mfvanek/image-resizing
  */
 
 package com.mfvanek.image.resizing.interfaces;
-
 
 import com.mfvanek.image.resizing.enums.ResizeType;
 

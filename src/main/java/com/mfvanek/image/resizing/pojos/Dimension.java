@@ -1,26 +1,29 @@
 /*
- * Copyright (c) 2018. Ivan Vakhrushev. All rights reserved.
- * https://github.com/mfvanek
+ * Copyright (c) 2018-2022. Ivan Vakhrushev. All rights reserved.
+ * https://github.com/mfvanek/image-resizing
  */
 
 package com.mfvanek.image.resizing.pojos;
 
 import com.mfvanek.image.resizing.interfaces.Dimensional;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 
+@SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
+@Getter
 @ToString
 @EqualsAndHashCode
-public class Dimension implements Dimensional {
+public final class Dimension implements Dimensional {
 
     private final int width;
     private final int height;
 
-    public Dimension(int dimension) {
+    public Dimension(final int dimension) {
         this(dimension, dimension);
     }
 
-    public Dimension(int width, int height) {
+    public Dimension(final int width, final int height) {
         validateWidth(width);
         validateHeight(height);
 
@@ -28,23 +31,13 @@ public class Dimension implements Dimensional {
         this.height = height;
     }
 
-    @Override
-    public int getWidth() {
-        return width;
-    }
-
-    @Override
-    public int getHeight() {
-        return height;
-    }
-
-    private static void validateWidth(int width) {
+    private static void validateWidth(final int width) {
         if (width < 1) {
             throw new IllegalArgumentException("Width should be positive");
         }
     }
 
-    private static void validateHeight(int height) {
+    private static void validateHeight(final int height) {
         if (height < 1) {
             throw new IllegalArgumentException("Height should be positive");
         }

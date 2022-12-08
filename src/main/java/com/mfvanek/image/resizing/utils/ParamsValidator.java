@@ -1,22 +1,20 @@
 /*
- * Copyright (c) 2018. Ivan Vakhrushev. All rights reserved.
- * https://github.com/mfvanek
+ * Copyright (c) 2018-2022. Ivan Vakhrushev. All rights reserved.
+ * https://github.com/mfvanek/image-resizing
  */
 
 package com.mfvanek.image.resizing.utils;
 
 import com.mfvanek.image.resizing.enums.ResizeType;
 import com.mfvanek.image.resizing.pojos.ResizeParams;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Objects;
 
-public class ParamsValidator {
-
-    private static final Logger logger = LoggerFactory.getLogger(ParamsValidator.class);
+@Slf4j
+public final class ParamsValidator {
 
     private static final int EXPECTED_COUNT = 3;
     private static final URL DEFAULT_URL = getDefaultImage();
@@ -28,7 +26,7 @@ public class ParamsValidator {
     private int height = 100;
     private ResizeType algorithm = ResizeType.RAW;
 
-    private ParamsValidator(String[] args) {
+    private ParamsValidator(final String... args) {
         this.args = args;
         this.canUseDefault = false;
         try {
@@ -41,16 +39,16 @@ public class ParamsValidator {
     }
 
     private static URL getDefaultImage() {
-        final URL defaultURL = ParamsValidator.class.getClassLoader().getResource("java-logo.jpeg");
+        final URL defaultURL = Thread.currentThread().getContextClassLoader().getResource("java-logo.jpeg");
         if (defaultURL != null) {
-            logger.debug("Default image URL = {}", defaultURL);
+            log.debug("Default image URL = {}", defaultURL);
         } else {
-            logger.error("Default image is not found!");
+            log.error("Default image is not found!");
         }
         return defaultURL;
     }
 
-    public static ParamsValidator getInstance(String[] args) {
+    public static ParamsValidator builder(final String... args) {
         return new ParamsValidator(args);
     }
 
@@ -59,12 +57,12 @@ public class ParamsValidator {
         return this;
     }
 
-    public ParamsValidator withAlgorithm(ResizeType algorithm) {
+    public ParamsValidator withAlgorithm(final ResizeType algorithm) {
         this.algorithm = algorithm;
         return this;
     }
 
-    public ParamsValidator withPath(String pathToFile) {
+    public ParamsValidator withPath(final String pathToFile) {
         this.pathToFile = pathToFile;
         return this;
     }
@@ -86,11 +84,11 @@ public class ParamsValidator {
         return ResizeParams.newWithAlgorithm(pathToFile, width, height, algorithm);
     }
 
-    private static int toDimensionValue(String value, String paramName) {
+    private static int toDimensionValue(final String value, final String paramName) {
         try {
             return Integer.parseInt(value, 10);
         } catch (NumberFormatException e) {
-            logger.error(e.getLocalizedMessage(), e);
+            log.error(e.getLocalizedMessage(), e);
             throw new IllegalArgumentException(String.format("The %s has an invalid format or value", paramName), e);
         }
     }
