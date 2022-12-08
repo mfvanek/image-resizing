@@ -23,7 +23,6 @@
         <exclude name="CommentDefaultAccessModifier"/>
         <exclude name="LongVariable"/>
         <exclude name="ShortVariable"/>
-        <exclude name="LocalVariableCouldBeFinal"/> <!-- TODO -->
     </rule>
 
     <rule ref="category/java/codestyle.xml/ClassNamingConventions">

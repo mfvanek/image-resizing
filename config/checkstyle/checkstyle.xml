@@ -54,7 +54,7 @@
         <module name="ExecutableStatementCount"/>
         <module name="ExplicitInitialization"/>
         <!-- <module name="FinalClass"/> invalid -->
-        <!-- <module name="FinalLocalVariable"/> TODO -->
+        <module name="FinalLocalVariable"/>
         <module name="FinalParameters"/>
         <!-- <module name="HiddenField"/> invalid -->
         <!-- <module name="HideUtilityClassConstructor"/> invalid -->
@@ -229,7 +229,6 @@
         <module name="CustomImportOrder"/> invalid -->
         <module name="UnusedImports"/>
         <module name="RedundantImport"/>
-        <!-- TODO
         <module name="IllegalImport">
             <property name="id" value="IllegalImportMain"/>
             <property name="regexp" value="true"/>
@@ -242,7 +241,6 @@
                 ^org\.springframework\.test\.web\.servlet\.MockMvc"/>
             <property name="illegalPkgs" value="^org\.hamcrest"/>
         </module>
-        -->
         <module name="IllegalImport">
             <property name="id" value="IllegalImportJavaIo"/>
             <property name="regexp" value="true"/>

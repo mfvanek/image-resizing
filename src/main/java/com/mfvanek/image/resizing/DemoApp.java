@@ -22,9 +22,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 
-@SuppressWarnings("PMD.SystemPrintln") // TODO
 // TODO Consider to use any third party library https://www.baeldung.com/java-images
 @Slf4j
 public class DemoApp {
@@ -32,17 +30,15 @@ public class DemoApp {
     private static Path tmpDir;
 
     public static void main(final String[] args) {
-        System.out.println("Hi there!\nThis is demo application for image resizing");
-        System.out.printf("Started with args[%d] = ", args.length);
-        Arrays.stream(args).forEach(a -> System.out.print(a + " "));
-        System.out.println();
+        log.info("Hi there!%nThis is demo application for image resizing");
+        log.info("Started with args[{}}] = {}", args.length, String.join("", args));
 
         try (ConfigurableApplicationContext ctx = new AnnotationConfigApplicationContext(ResizersConfig.class)) {
             final GraphicsProvider graphicsProvider = ctx.getBean(GraphicsProvider.class);
-            System.out.println("Supported formats: " + String.join(", ", graphicsProvider.getSupportedFormats()));
+            log.info("Supported formats: {}", String.join(", ", graphicsProvider.getSupportedFormats()));
 
             tmpDir = Files.createTempDirectory("resized_images_");
-            System.out.println("Output directory = " + tmpDir);
+            log.info("Output directory = {}", tmpDir);
 
             if (args.length == 0) { // when running from IDE
                 final ResizeParams resizeParams = ParamsValidator.builder(args)
@@ -63,7 +59,7 @@ public class DemoApp {
     private static void process(final GraphicsProvider graphicsProvider, final ResizeParams resizeParams) {
         try {
             if (graphicsProvider.isFormatNotSupported(resizeParams.getExtension())) {
-                System.out.printf("File format '%s' is not supported%n", resizeParams.getExtension());
+                log.warn("File format '{}' is not supported", resizeParams.getExtension());
                 return;
             }
 
@@ -73,7 +69,7 @@ public class DemoApp {
                 final long startTime = System.nanoTime();
                 final BufferedImage outputImage = imageResizer.resize(img, resizeParams);
                 final long endTime = System.nanoTime();
-                log.debug(String.format("Resize is completed. Elapsed time %d microseconds", (endTime - startTime) / 1_000_000));
+                log.debug("Resize is completed. Elapsed time {} microseconds", (endTime - startTime) / 1_000_000);
                 saveToFile(resizeParams, outputImage);
             } else {
                 log.error("Unable to load given image");
@@ -87,6 +83,6 @@ public class DemoApp {
         final URI outputUri = tmpDir.resolve(resizeParams.getOutputName()).toUri();
         final File outputFile = new File(outputUri);
         ImageIO.write(outputImage, resizeParams.getExtension(), outputFile);
-        System.out.println("Resized " + outputUri);
+        log.info("Resized {}", outputUri);
     }
 }
