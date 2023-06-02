@@ -5,8 +5,9 @@ Java image resizing console app
 [![codecov](https://codecov.io/gh/mfvanek/image-resizing/branch/master/graph/badge.svg?token=A32YQVMNWI)](https://codecov.io/gh/mfvanek/image-resizing)
 
 ## How to run
-- cd /d D:\src\image-resizing
-- java -jar ".\target\image.resizing-1.0-SNAPSHOT-jar-with-dependencies.jar" "https://static.ngs.ru/news/99/preview/e88eba0dbd5cd0e30ee349a3a3c54dbd07d2b28f_712.jpg" 333 444
+```shell
+java -jar "./build/libs/image-resizing-1.3.0-SNAPSHOT-all.jar" "https://static.ngs.ru/news/99/preview/e88eba0dbd5cd0e30ee349a3a3c54dbd07d2b28f_712.jpg" 333 444
+```
 
 ## Task
 ### RUS
