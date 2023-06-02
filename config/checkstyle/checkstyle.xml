@@ -20,7 +20,7 @@
     </module>
     <module name="Header">
         <property name="header"
-                  value="/*\n * Copyright (c) 2018-2022. Ivan Vakhrushev. All rights reserved.\n * https://github.com/mfvanek/image-resizing\n */"/>
+                  value="/*\n * Copyright (c) 2018-2023. Ivan Vakhrushev. All rights reserved.\n * https://github.com/mfvanek/image-resizing\n */"/>
         <property name="fileExtensions" value="java"/>
     </module>
     <module name="NewlineAtEndOfFile"/>
