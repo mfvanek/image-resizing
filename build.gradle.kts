@@ -12,7 +12,7 @@ plugins {
     id("com.github.spotbugs") version "5.0.14"
     id("net.ltgt.errorprone") version "3.1.0"
     id("maven-publish")
-    id("io.freefair.lombok") version "8.0.1"
+    id("io.freefair.lombok") version "8.1.0"
 }
 
 repositories {
@@ -26,10 +26,10 @@ description = "Java image resizing console app"
 
 dependencies {
     implementation("org.slf4j:slf4j-api:2.0.7")
-    implementation("ch.qos.logback:logback-classic:1.4.7")
+    implementation("ch.qos.logback:logback-classic:1.4.8")
     implementation("org.apache.commons:commons-lang3:3.12.0")
-    implementation("commons-io:commons-io:2.11.0")
-    implementation(platform("org.springframework:spring-framework-bom:6.0.9"))
+    implementation("commons-io:commons-io:2.13.0")
+    implementation(platform("org.springframework:spring-framework-bom:6.0.11"))
     implementation("org.springframework:spring-context")
     implementation("javax.annotation:javax.annotation-api:1.3.2")
 
@@ -39,11 +39,11 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-params")
     testImplementation("org.springframework:spring-test")
     testImplementation("org.assertj:assertj-core:3.24.2")
-    testImplementation("nl.jqno.equalsverifier:equalsverifier:3.12")
+    testImplementation("nl.jqno.equalsverifier:equalsverifier:3.15")
 
     //pitest("it.mulders.stryker:pit-dashboard-reporter:0.2.1")
     checkstyle("com.thomasjensen.checkstyle.addons:checkstyle-addons:7.0.1")
-    errorprone("com.google.errorprone:error_prone_core:2.19.1")
+    errorprone("com.google.errorprone:error_prone_core:2.20.0")
 }
 
 application {
