@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.mfvanek</groupId>
+    <groupId>io.github.mfvanek</groupId>
     <artifactId>image.resizing</artifactId>
     <version>1.2-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -19,7 +19,7 @@
         <project.reporting.outputEncoding>${source.encoding}</project.reporting.outputEncoding>
         <pmd.version>6.52.0</pmd.version>
         <org.springframework.version>6.0.2</org.springframework.version>
-        <mainClass>com.mfvanek.image.resizing.DemoApp</mainClass>
+        <mainClass>io.github.mfvanek.image.resizing.DemoApp</mainClass>
     </properties>
 
     <dependencyManagement>
