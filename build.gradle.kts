@@ -13,6 +13,7 @@ plugins {
     id("net.ltgt.errorprone") version "3.1.0"
     id("maven-publish")
     id("io.freefair.lombok") version "8.1.0"
+    id("com.github.ben-manes.versions") version "0.47.0"
 }
 
 repositories {
@@ -174,5 +175,21 @@ tasks.withType<SpotBugsTask>().configureEach {
 publishing {
     publications.create<MavenPublication>("maven") {
         from(components["java"])
+    }
+}
+
+fun isNonStable(version: String): Boolean {
+    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.uppercase().contains(it) }
+    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+    val isStable = stableKeyword || regex.matches(version)
+    return isStable.not()
+}
+
+tasks.named<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask>("dependencyUpdates").configure {
+    checkForGradleUpdate = true
+    gradleReleaseChannel = "current"
+    checkConstraints = true
+    rejectVersionIf {
+        isNonStable(candidate.version)
     }
 }
