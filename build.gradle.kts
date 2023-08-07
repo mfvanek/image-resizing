@@ -9,10 +9,10 @@ plugins {
     id("jacoco")
     id("checkstyle")
     id("pmd")
-    id("com.github.spotbugs") version "5.1.1"
+    id("com.github.spotbugs") version "5.1.3"
     id("net.ltgt.errorprone") version "3.1.0"
     id("maven-publish")
-    id("io.freefair.lombok") version "8.1.0"
+    id("io.freefair.lombok") version "8.2.2"
     id("com.github.ben-manes.versions") version "0.47.0"
 }
 
@@ -27,7 +27,7 @@ description = "Java image resizing console app"
 
 dependencies {
     implementation("org.slf4j:slf4j-api:2.0.7")
-    implementation("ch.qos.logback:logback-classic:1.4.8")
+    implementation("ch.qos.logback:logback-classic:1.4.11")
     implementation("org.apache.commons:commons-lang3:3.13.0")
     implementation("commons-io:commons-io:2.13.0")
     implementation(platform("org.springframework:spring-framework-bom:6.0.11"))
@@ -44,7 +44,7 @@ dependencies {
 
     //pitest("it.mulders.stryker:pit-dashboard-reporter:0.2.1")
     checkstyle("com.thomasjensen.checkstyle.addons:checkstyle-addons:7.0.1")
-    errorprone("com.google.errorprone:error_prone_core:2.20.0")
+    errorprone("com.google.errorprone:error_prone_core:2.21.1")
 }
 
 application {
