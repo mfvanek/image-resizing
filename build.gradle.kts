@@ -27,7 +27,7 @@ description = "Java image resizing console app"
 
 dependencies {
     implementation("org.slf4j:slf4j-api:2.0.7")
-    implementation("ch.qos.logback:logback-classic:1.4.9")
+    implementation("ch.qos.logback:logback-classic:1.4.11")
     implementation("org.apache.commons:commons-lang3:3.13.0")
     implementation("commons-io:commons-io:2.13.0")
     implementation(platform("org.springframework:spring-framework-bom:6.0.11"))
