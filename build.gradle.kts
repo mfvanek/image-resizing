@@ -9,7 +9,7 @@ plugins {
     id("jacoco")
     id("checkstyle")
     id("pmd")
-    id("com.github.spotbugs") version "5.1.1"
+    id("com.github.spotbugs") version "5.1.3"
     id("net.ltgt.errorprone") version "3.1.0"
     id("maven-publish")
     id("io.freefair.lombok") version "8.1.0"
