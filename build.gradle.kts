@@ -12,7 +12,7 @@ plugins {
     id("com.github.spotbugs") version "5.1.4"
     id("net.ltgt.errorprone") version "3.1.0"
     id("maven-publish")
-    id("io.freefair.lombok") version "8.3"
+    id("io.freefair.lombok") version "8.4"
     id("com.github.ben-manes.versions") version "0.48.0"
 }
 
