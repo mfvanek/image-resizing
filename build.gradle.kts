@@ -44,7 +44,7 @@ dependencies {
 
     //pitest("it.mulders.stryker:pit-dashboard-reporter:0.2.1")
     checkstyle("com.thomasjensen.checkstyle.addons:checkstyle-addons:7.0.1")
-    errorprone("com.google.errorprone:error_prone_core:2.22.0")
+    errorprone("com.google.errorprone:error_prone_core:2.23.0")
 }
 
 application {
