@@ -6,6 +6,7 @@
 package io.github.mfvanek.image.resizing.pojos;
 
 import io.github.mfvanek.image.resizing.enums.ResizeType;
+import io.github.mfvanek.image.resizing.interfaces.Dimensional;
 import io.github.mfvanek.image.resizing.interfaces.ImageParams;
 import lombok.Getter;
 import lombok.ToString;
@@ -24,21 +25,21 @@ public class ResizeParams implements ImageParams {
 
     private final String pathToFile;
     private final String pathToFileLowercased;
-    private final ImageDimension imageDimension;
+    private final Dimensional dimensional;
     private final ResizeType algorithm;
     private final boolean convertToGrayscale;
 
     protected ResizeParams(final String pathToFile,
-                           final ImageDimension imageDimension,
+                           final Dimensional dimensional,
                            final ResizeType algorithm,
                            final boolean convertToGrayscale) {
-        log.debug("Constructing ResizeParams with: pathToFile = {}, dimension = {}, algorithm = {}, convertToGrayscale = {}",
-                pathToFile, imageDimension, algorithm, convertToGrayscale);
+        log.debug("Constructing ResizeParams with: pathToFile = {}, dimensional = {}, algorithm = {}, convertToGrayscale = {}",
+                pathToFile, dimensional, algorithm, convertToGrayscale);
         validatePath(pathToFile);
 
         this.pathToFile = pathToFile;
         this.pathToFileLowercased = pathToFile.toLowerCase(Locale.ENGLISH);
-        this.imageDimension = imageDimension;
+        this.dimensional = dimensional;
         this.algorithm = algorithm;
         this.convertToGrayscale = convertToGrayscale;
     }
@@ -92,12 +93,12 @@ public class ResizeParams implements ImageParams {
 
     @Override
     public int getWidth() {
-        return imageDimension.getWidth();
+        return dimensional.getWidth();
     }
 
     @Override
     public int getHeight() {
-        return imageDimension.getHeight();
+        return dimensional.getHeight();
     }
 
     @Override
@@ -108,7 +109,7 @@ public class ResizeParams implements ImageParams {
     private static void validatePath(final String pathToFile) {
         Objects.requireNonNull(pathToFile, "Path to image cannot be null");
 
-        if (pathToFile.length() == 0) {
+        if (pathToFile.isEmpty()) {
             throw new IllegalArgumentException("Path to image cannot be empty");
         }
 
@@ -117,7 +118,7 @@ public class ResizeParams implements ImageParams {
         }
     }
 
-    public static ImageParams from(final ImageParams oldParams, final ImageDimension newImageDimension) {
-        return new ResizeParams(oldParams.getPathToFile(), newImageDimension, oldParams.getAlgorithm(), oldParams.isConvertToGrayscale());
+    public static ImageParams from(final ImageParams oldParams, final Dimensional newDimensional) {
+        return new ResizeParams(oldParams.getPathToFile(), newDimensional, oldParams.getAlgorithm(), oldParams.isConvertToGrayscale());
     }
 }
