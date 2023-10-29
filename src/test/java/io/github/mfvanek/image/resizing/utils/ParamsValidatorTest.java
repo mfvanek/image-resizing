@@ -31,7 +31,7 @@ class ParamsValidatorTest {
         assertThat(ParamsValidator.builder("file:/any-picture.BMP", "111", "222").validate())
                 .isNotNull()
                 .hasToString("ResizeParams(pathToFile=file:/any-picture.BMP, pathToFileLowercased=file:/any-picture.bmp, " +
-                        "dimension=Dimension(width=111, height=222), algorithm=RAW, convertToGrayscale=true)")
+                        "imageDimension=ImageDimension(width=111, height=222), algorithm=RAW, convertToGrayscale=true)")
                 .satisfies(r -> {
                     assertThat(r.getPathToFile()).endsWith("any-picture.BMP");
                     assertThat(r.getWidth()).isEqualTo(111);

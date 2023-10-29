@@ -24,21 +24,21 @@ public class ResizeParams implements ImageParams {
 
     private final String pathToFile;
     private final String pathToFileLowercased;
-    private final Dimension dimension;
+    private final ImageDimension imageDimension;
     private final ResizeType algorithm;
     private final boolean convertToGrayscale;
 
     protected ResizeParams(final String pathToFile,
-                           final Dimension dimension,
+                           final ImageDimension imageDimension,
                            final ResizeType algorithm,
                            final boolean convertToGrayscale) {
         log.debug("Constructing ResizeParams with: pathToFile = {}, dimension = {}, algorithm = {}, convertToGrayscale = {}",
-                pathToFile, dimension, algorithm, convertToGrayscale);
+                pathToFile, imageDimension, algorithm, convertToGrayscale);
         validatePath(pathToFile);
 
         this.pathToFile = pathToFile;
         this.pathToFileLowercased = pathToFile.toLowerCase(Locale.ENGLISH);
-        this.dimension = dimension;
+        this.imageDimension = imageDimension;
         this.algorithm = algorithm;
         this.convertToGrayscale = convertToGrayscale;
     }
@@ -47,7 +47,7 @@ public class ResizeParams implements ImageParams {
                                                 final int width,
                                                 final int height,
                                                 final ResizeType algorithm) {
-        return new ResizeParams(pathToFile, new Dimension(width, height), algorithm, true);
+        return new ResizeParams(pathToFile, new ImageDimension(width, height), algorithm, true);
     }
 
     public static ResizeParams newWithRaw(final String pathToFile,
@@ -92,12 +92,12 @@ public class ResizeParams implements ImageParams {
 
     @Override
     public int getWidth() {
-        return dimension.getWidth();
+        return imageDimension.getWidth();
     }
 
     @Override
     public int getHeight() {
-        return dimension.getHeight();
+        return imageDimension.getHeight();
     }
 
     @Override
@@ -117,7 +117,7 @@ public class ResizeParams implements ImageParams {
         }
     }
 
-    public static ImageParams from(final ImageParams oldParams, final Dimension newDimension) {
-        return new ResizeParams(oldParams.getPathToFile(), newDimension, oldParams.getAlgorithm(), oldParams.isConvertToGrayscale());
+    public static ImageParams from(final ImageParams oldParams, final ImageDimension newImageDimension) {
+        return new ResizeParams(oldParams.getPathToFile(), newImageDimension, oldParams.getAlgorithm(), oldParams.isConvertToGrayscale());
     }
 }

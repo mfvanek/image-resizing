@@ -11,38 +11,38 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class DimensionTest {
+class ImageDimensionTest {
 
     @Test
     void constructor() {
-        assertThatThrownBy(() -> new Dimension(0, 0))
+        assertThatThrownBy(() -> new ImageDimension(0, 0))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Width should be positive");
 
-        assertThatThrownBy(() -> new Dimension(-1, 0))
+        assertThatThrownBy(() -> new ImageDimension(-1, 0))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Width should be positive");
 
-        assertThatThrownBy(() -> new Dimension(1, 0))
+        assertThatThrownBy(() -> new ImageDimension(1, 0))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Height should be positive");
 
-        assertThatThrownBy(() -> new Dimension(1, -1))
+        assertThatThrownBy(() -> new ImageDimension(1, -1))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Height should be positive");
     }
 
     @Test
     void widthAndHeight() {
-        assertThat(new Dimension(100))
-                .hasToString("Dimension(width=100, height=100)")
+        assertThat(new ImageDimension(100))
+                .hasToString("ImageDimension(width=100, height=100)")
                 .satisfies(d -> {
                     assertThat(d.getWidth()).isEqualTo(100);
                     assertThat(d.getHeight()).isEqualTo(100);
                 });
 
-        assertThat(new Dimension(123, 321))
-                .hasToString("Dimension(width=123, height=321)")
+        assertThat(new ImageDimension(123, 321))
+                .hasToString("ImageDimension(width=123, height=321)")
                 .satisfies(d -> {
                     assertThat(d.getWidth()).isEqualTo(123);
                     assertThat(d.getHeight()).isEqualTo(321);
@@ -52,7 +52,7 @@ class DimensionTest {
     @Test
     @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
     void equalsHashCodeShouldAdhereContracts() {
-        EqualsVerifier.forClass(Dimension.class)
+        EqualsVerifier.forClass(ImageDimension.class)
                 .verify();
     }
 }

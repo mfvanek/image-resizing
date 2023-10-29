@@ -9,7 +9,7 @@ plugins {
     id("jacoco")
     id("checkstyle")
     id("pmd")
-    id("com.github.spotbugs") version "5.1.4"
+    id("com.github.spotbugs") version "5.2.1"
     id("net.ltgt.errorprone") version "3.1.0"
     id("maven-publish")
     id("io.freefair.lombok") version "8.4"
@@ -22,7 +22,7 @@ repositories {
 }
 
 group = "io.github.mfvanek"
-version = "1.3.0-SNAPSHOT"
+version = "1.4.0-SNAPSHOT"
 description = "Java image resizing console app"
 
 dependencies {

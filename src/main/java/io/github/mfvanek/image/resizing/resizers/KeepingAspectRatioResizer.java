@@ -7,7 +7,7 @@ package io.github.mfvanek.image.resizing.resizers;
 
 import io.github.mfvanek.image.resizing.enums.ResizeType;
 import io.github.mfvanek.image.resizing.interfaces.ImageParams;
-import io.github.mfvanek.image.resizing.pojos.Dimension;
+import io.github.mfvanek.image.resizing.pojos.ImageDimension;
 import io.github.mfvanek.image.resizing.pojos.ResizeParams;
 import org.springframework.stereotype.Component;
 
@@ -27,8 +27,8 @@ class KeepingAspectRatioResizer extends AbstractImageResizer {
         final int newWidth = resizeParams.getWidth();
         final double aspectRatio = inputImage.getWidth() / (double) inputImage.getHeight();
         final int scaledHeight = (int) (newWidth / aspectRatio);
-        final Dimension newDimension = new Dimension(newWidth, scaledHeight);
-        return super.resize(inputImage, ResizeParams.from(resizeParams, newDimension));
+        final ImageDimension newImageDimension = new ImageDimension(newWidth, scaledHeight);
+        return super.resize(inputImage, ResizeParams.from(resizeParams, newImageDimension));
     }
 
     @Override
