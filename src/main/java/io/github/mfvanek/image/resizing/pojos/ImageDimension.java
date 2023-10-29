@@ -10,20 +10,21 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-@SuppressWarnings("PMD.AvoidLiteralsInIfCondition")
 @Getter
 @ToString
 @EqualsAndHashCode
-public final class Dimension implements Dimensional {
+public final class ImageDimension implements Dimensional {
+
+    private static final int MINIMAL_SIZE = 1;
 
     private final int width;
     private final int height;
 
-    public Dimension(final int dimension) {
+    public ImageDimension(final int dimension) {
         this(dimension, dimension);
     }
 
-    public Dimension(final int width, final int height) {
+    public ImageDimension(final int width, final int height) {
         validateWidth(width);
         validateHeight(height);
 
@@ -32,13 +33,13 @@ public final class Dimension implements Dimensional {
     }
 
     private static void validateWidth(final int width) {
-        if (width < 1) {
+        if (width < MINIMAL_SIZE) {
             throw new IllegalArgumentException("Width should be positive");
         }
     }
 
     private static void validateHeight(final int height) {
-        if (height < 1) {
+        if (height < MINIMAL_SIZE) {
             throw new IllegalArgumentException("Height should be positive");
         }
     }
