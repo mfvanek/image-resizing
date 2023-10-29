@@ -29,7 +29,7 @@ dependencies {
     implementation("org.slf4j:slf4j-api:2.0.9")
     implementation("ch.qos.logback:logback-classic:1.4.11")
     implementation("org.apache.commons:commons-lang3:3.13.0")
-    implementation("commons-io:commons-io:2.14.0")
+    implementation("commons-io:commons-io:2.15.0")
     implementation(platform("org.springframework:spring-framework-bom:6.0.13"))
     implementation("org.springframework:spring-context")
     implementation("javax.annotation:javax.annotation-api:1.3.2")
