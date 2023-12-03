@@ -9,7 +9,7 @@ plugins {
     id("jacoco")
     id("checkstyle")
     id("pmd")
-    id("com.github.spotbugs") version "5.2.4"
+    id("com.github.spotbugs") version "6.0.1"
     id("net.ltgt.errorprone") version "3.1.0"
     id("maven-publish")
     id("io.freefair.lombok") version "8.4"
@@ -22,14 +22,14 @@ repositories {
 }
 
 group = "io.github.mfvanek"
-version = "1.4.0-SNAPSHOT"
+version = "1.4.1"
 description = "Java image resizing console app"
 
 dependencies {
     implementation("org.slf4j:slf4j-api:2.0.9")
-    implementation("ch.qos.logback:logback-classic:1.4.13")
+    implementation("ch.qos.logback:logback-classic:1.4.14")
     implementation("org.apache.commons:commons-lang3:3.14.0")
-    implementation("commons-io:commons-io:2.15.0")
+    implementation("commons-io:commons-io:2.15.1")
     implementation(platform("org.springframework:spring-framework-bom:6.1.1"))
     implementation("org.springframework:spring-context")
     implementation("javax.annotation:javax.annotation-api:1.3.2")
@@ -40,7 +40,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-params")
     testImplementation("org.springframework:spring-test")
     testImplementation("org.assertj:assertj-core:3.24.2")
-    testImplementation("nl.jqno.equalsverifier:equalsverifier:3.15.3")
+    testImplementation("nl.jqno.equalsverifier:equalsverifier:3.15.4")
 
     //pitest("it.mulders.stryker:pit-dashboard-reporter:0.2.1")
     checkstyle("com.thomasjensen.checkstyle.addons:checkstyle-addons:7.0.1")
@@ -52,18 +52,24 @@ application {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
     withJavadocJar()
     withSourcesJar()
 }
 tasks.withType<JavaCompile>().configureEach {
+    options.compilerArgs.add("-parameters")
     options.errorprone {
         disableWarningsInGeneratedCode.set(true)
     }
 }
 
 tasks {
+    wrapper {
+        gradleVersion = "8.5"
+    }
+
     jar {
         manifest {
             attributes["Main-Class"] = application.mainClass
