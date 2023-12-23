@@ -1,10 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FindBugsFilter>
     <Match>
-        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
+        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2,CT_CONSTRUCTOR_THROW,SLF4J_LOGGER_SHOULD_BE_NON_STATIC,LO_INVALID_STRING_FORMAT_NOTATION"/>
     </Match>
     <Match>
-        <Bug pattern="NP_NULL_PARAM_DEREF_NONVIRTUAL"/>
+        <Bug pattern="CLI_CONSTANT_LIST_INDEX,EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS,EXS_EXCEPTION_SOFTENING_NO_CHECKED,WEM_WEAK_EXCEPTION_MESSAGING,OPM_OVERLY_PERMISSIVE_METHOD,STT_TOSTRING_STORED_IN_FIELD,STT_STRING_PARSING_A_FIELD"/>
+    </Match>
+    <Match>
+        <Bug pattern="IMC_IMMATURE_CLASS_NO_TOSTRING"/>
+        <Or>
+            <Class name="io.github.mfvanek.image.resizing.resizers.ResizersFactory"/>
+            <Class name="io.github.mfvanek.image.resizing.utils.ParamsValidator"/>
+        </Or>
+    </Match>
+    <Match>
+        <Bug pattern="USBR_UNNECESSARY_STORE_BEFORE_RETURN"/>
+        <Class name="io.github.mfvanek.image.resizing.pojos.ImageDimension"/>
+    </Match>
+    <Match>
+        <Bug pattern="NP_NULL_PARAM_DEREF_NONVIRTUAL,SEC_SIDE_EFFECT_CONSTRUCTOR"/>
         <Class name="~.*Test"/>
+    </Match>
+    <Match>
+        <Bug pattern="CRLF_INJECTION_LOGS,WEAK_FILENAMEUTILS"/>
+    </Match>
+    <Match>
+        <Bug pattern="PATH_TRAVERSAL_IN"/>
+        <Or>
+            <Class name="io.github.mfvanek.image.resizing.DemoApp"/>
+            <Class name="io.github.mfvanek.image.resizing.resizers.AwtGraphicsProvider"/>
+        </Or>
     </Match>
 </FindBugsFilter>

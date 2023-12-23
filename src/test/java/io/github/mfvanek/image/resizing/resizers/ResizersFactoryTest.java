@@ -47,11 +47,12 @@ class ResizersFactoryTest {
 
     @Test
     void correctness() {
-        final Set<Class<?>> resizers = new HashSet<>();
-        for (final ResizeType resizeType : ResizeType.values()) {
+        final ResizeType[] types = ResizeType.values();
+        final Set<Class<?>> resizers = new HashSet<>(types.length);
+        for (final ResizeType resizeType : types) {
             resizers.add(ResizersFactory.getByAlgorithm(resizeType).getClass());
         }
         assertThat(resizers)
-                .hasSameSizeAs(ResizeType.values());
+                .hasSameSizeAs(types);
     }
 }

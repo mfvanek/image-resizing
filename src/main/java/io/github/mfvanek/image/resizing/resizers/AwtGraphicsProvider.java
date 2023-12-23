@@ -40,7 +40,6 @@ class AwtGraphicsProvider implements GraphicsProvider {
             final File file = new File(uri);
             return ImageIO.read(file);
         } catch (IOException e) {
-            log.error(e.getLocalizedMessage(), e);
             throw new RuntimeException(e);
         }
     }
@@ -50,7 +49,6 @@ class AwtGraphicsProvider implements GraphicsProvider {
         try {
             return ImageIO.read(url);
         } catch (IOException e) {
-            log.error(e.getLocalizedMessage(), e);
             throw new RuntimeException(e);
         }
     }

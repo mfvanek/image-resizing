@@ -28,6 +28,7 @@ public class ResizeParams implements ImageParams {
     private final Dimensional dimensional;
     private final ResizeType algorithm;
     private final boolean convertToGrayscale;
+    private final boolean similarToURL;
 
     protected ResizeParams(final String pathToFile,
                            final Dimensional dimensional,
@@ -42,6 +43,7 @@ public class ResizeParams implements ImageParams {
         this.dimensional = dimensional;
         this.algorithm = algorithm;
         this.convertToGrayscale = convertToGrayscale;
+        this.similarToURL = this.pathToFileLowercased.startsWith("http");
     }
 
     public static ResizeParams newWithAlgorithm(final String pathToFile,
@@ -68,7 +70,7 @@ public class ResizeParams implements ImageParams {
 
     @Override
     public boolean isSimilarToURL() {
-        return pathToFileLowercased.startsWith("http");
+        return similarToURL;
     }
 
     @Override
