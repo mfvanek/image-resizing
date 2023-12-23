@@ -9,7 +9,7 @@ plugins {
     id("jacoco")
     id("checkstyle")
     id("pmd")
-    id("com.github.spotbugs") version "6.0.2"
+    id("com.github.spotbugs") version "6.0.4"
     id("net.ltgt.errorprone") version "3.1.0"
     id("maven-publish")
     id("io.freefair.lombok") version "8.4"
@@ -22,7 +22,7 @@ repositories {
 }
 
 group = "io.github.mfvanek"
-version = "1.4.1"
+version = "1.4.2"
 description = "Java image resizing console app"
 
 dependencies {
@@ -40,11 +40,11 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-params")
     testImplementation("org.springframework:spring-test")
     testImplementation("org.assertj:assertj-core:3.24.2")
-    testImplementation("nl.jqno.equalsverifier:equalsverifier:3.15.4")
+    testImplementation("nl.jqno.equalsverifier:equalsverifier:3.15.5")
 
     //pitest("it.mulders.stryker:pit-dashboard-reporter:0.2.1")
     checkstyle("com.thomasjensen.checkstyle.addons:checkstyle-addons:7.0.1")
-    errorprone("com.google.errorprone:error_prone_core:2.23.0")
+    errorprone("com.google.errorprone:error_prone_core:2.24.0")
 }
 
 application {
