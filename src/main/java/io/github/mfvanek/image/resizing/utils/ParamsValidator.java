@@ -88,7 +88,6 @@ public final class ParamsValidator {
         try {
             return Integer.parseInt(value, 10);
         } catch (NumberFormatException e) {
-            log.error(e.getLocalizedMessage(), e);
             throw new IllegalArgumentException(String.format("The %s has an invalid format or value", paramName), e);
         }
     }

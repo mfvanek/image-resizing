@@ -52,14 +52,15 @@ public class DemoApp {
             final ResizeParams resizeParams = ParamsValidator.builder(args).useDefaultIfNeed().withAlgorithm(ResizeType.RAW).validate();
             process(graphicsProvider, resizeParams);
         } catch (IOException e) {
-            log.error(e.getLocalizedMessage(), e);
+            log.error("Error occurred while creating temp folder", e);
         }
     }
 
     private static void process(final GraphicsProvider graphicsProvider, final ResizeParams resizeParams) {
         try {
-            if (graphicsProvider.isFormatNotSupported(resizeParams.getExtension())) {
-                log.warn("File format '{}' is not supported", resizeParams.getExtension());
+            final String extension = resizeParams.getExtension();
+            if (graphicsProvider.isFormatNotSupported(extension)) {
+                log.warn("File format '{}' is not supported", extension);
                 return;
             }
 
@@ -75,7 +76,7 @@ public class DemoApp {
                 log.error("Unable to load given image");
             }
         } catch (IOException e) {
-            log.error(e.getLocalizedMessage(), e);
+            log.error("Error occurred while saving resized image", e);
         }
     }
 
