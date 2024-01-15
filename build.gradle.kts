@@ -40,7 +40,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-params")
     testImplementation("org.springframework:spring-test")
     testImplementation("org.assertj:assertj-core:3.25.1")
-    testImplementation("nl.jqno.equalsverifier:equalsverifier:3.15.5")
+    testImplementation("nl.jqno.equalsverifier:equalsverifier:3.15.6")
 
     //pitest("it.mulders.stryker:pit-dashboard-reporter:0.2.1")
     checkstyle("com.thomasjensen.checkstyle.addons:checkstyle-addons:7.0.1")
