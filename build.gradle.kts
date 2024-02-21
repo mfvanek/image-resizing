@@ -30,7 +30,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.4.14")
     implementation("org.apache.commons:commons-lang3:3.14.0")
     implementation("commons-io:commons-io:2.15.1")
-    implementation(platform("org.springframework:spring-framework-bom:6.1.3"))
+    implementation(platform("org.springframework:spring-framework-bom:6.1.4"))
     implementation("org.springframework:spring-context")
     implementation("javax.annotation:javax.annotation-api:1.3.2")
 
