@@ -74,7 +74,7 @@ tasks.withType<JavaCompile>().configureEach {
 
 tasks {
     wrapper {
-        gradleVersion = "8.5"
+        gradleVersion = "8.7"
     }
 
     jar {
