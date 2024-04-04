@@ -11,12 +11,6 @@
         <exclude name="GuardLogStatement"/>
     </rule>
 
-    <rule ref="category/java/bestpractices.xml/AbstractClassWithoutAbstractMethod">
-        <properties>
-            <property name="violationSuppressXPath" value="//ClassOrInterfaceDeclaration['.*TestBase']"/>
-        </properties>
-    </rule>
-
     <rule ref="category/java/codestyle.xml">
         <exclude name="OnlyOneReturn"/>
         <exclude name="AtLeastOneConstructor"/>
@@ -41,13 +35,13 @@
         <properties>
             <property name="checkSetters" value="false"/>
             <property name="violationSuppressXPath"
-                      value="//ClassOrInterfaceBodyDeclaration/Annotation/MarkerAnnotation//Name[@Image='Test']"/>
+                      value=".[pmd-java:hasAnnotation('org.junit.jupiter.api.Test')] | .[pmd-java:hasAnnotation('org.junit.jupiter.params.ParameterizedTest')]"/>
         </properties>
     </rule>
 
     <rule ref="category/java/codestyle.xml/FieldNamingConventions">
         <properties>
-            <property name="exclusions" value="serialVersionUID|logger"/>
+            <property name="exclusions" value="serialVersionUID, logger"/>
         </properties>
     </rule>
 
@@ -57,12 +51,7 @@
         <exclude name="AvoidCatchingGenericException"/>
         <exclude name="AvoidThrowingRawExceptionTypes"/>
         <exclude name="UseUtilityClass"/>
-    </rule>
-
-    <rule ref="category/java/design.xml/AbstractClassWithoutAnyMethod">
-        <properties>
-            <property name="violationSuppressXPath" value="//ClassOrInterfaceDeclaration['.*TestBase']"/>
-        </properties>
+        <exclude name="ClassWithOnlyPrivateConstructorsShouldBeFinal"/> <!-- false positive -->
     </rule>
 
     <rule ref="category/java/design.xml/TooManyMethods">
@@ -85,14 +74,6 @@
     <rule ref="category/java/security.xml"/>
 
     <rule ref="category/java/errorprone.xml">
-        <exclude name="DataflowAnomalyAnalysis"/>
         <exclude name="AvoidDuplicateLiterals"/>
-    </rule>
-
-    <rule ref="category/java/errorprone.xml/EqualsNull">
-        <properties>
-            <property name="violationSuppressXPath"
-                      value="//ClassOrInterfaceBodyDeclaration/Annotation/MarkerAnnotation//Name[@Image='Test']"/>
-        </properties>
     </rule>
 </ruleset>

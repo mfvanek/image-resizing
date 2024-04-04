@@ -40,7 +40,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-params")
     testImplementation("org.springframework:spring-test")
     testImplementation("org.assertj:assertj-core:3.25.3")
-    testImplementation("nl.jqno.equalsverifier:equalsverifier:3.16")
+    testImplementation("nl.jqno.equalsverifier:equalsverifier:3.16.1")
 
     //pitest("it.mulders.stryker:pit-dashboard-reporter:0.2.1")
     checkstyle("com.thomasjensen.checkstyle.addons:checkstyle-addons:7.0.1")
@@ -74,7 +74,7 @@ tasks.withType<JavaCompile>().configureEach {
 
 tasks {
     wrapper {
-        gradleVersion = "8.5"
+        gradleVersion = "8.7"
     }
 
     jar {
